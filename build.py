@@ -8,6 +8,7 @@ Lit contenu/registre.py (les 62 nœuds) et contenu/niveau*.py (le cours rédigé
 """
 
 import html
+import re
 import importlib
 import os
 import shutil
@@ -193,6 +194,19 @@ def fiche(n):
             '</dl></div>' % (pre, ouv, b_cls, b_txt))
 
 
+_MATHS = re.compile(r"(\\\((?:.|\n)+?\\\)|\\\[(?:.|\n)+?\\\])")
+
+
+def proteger_maths(texte):
+    """Dans les formules, remplace < et > par \\lt et \\gt.
+
+    Sans cela, le navigateur lit « r<g » comme le début d'une balise <g> et avale la suite du texte.
+    """
+    def corrige(m):
+        return m.group(0).replace("<", r"\lt ").replace(">", r"\gt ")
+    return _MATHS.sub(corrige, texte)
+
+
 def section_noeud(n, numero, module):
     corps = n.corps or (
         '<div class="prof"><p class="lab">En cours de rédaction</p>'
@@ -206,7 +220,7 @@ def section_noeud(n, numero, module):
                html.escape(module.titre), numero, n.duree, html.escape(n.titre),
                n.objectif, fiche(n),
                master('<p>%s</p>' % n.master) if n.master else "",
-               corps))
+               proteger_maths(corps)))
 
 
 def coquille(titre, body, niveau=None, suivant=None, accueil=False):
@@ -428,6 +442,13 @@ def construire():
     if os.path.exists(vendor):
         os.makedirs(os.path.join(PUBLIC, "assets", "mathjax"), exist_ok=True)
         shutil.copy(vendor, os.path.join(PUBLIC, "assets", "mathjax", "tex-svg.js"))
+
+    # le code des nœuds, téléchargeable depuis le site
+    src_code = os.path.join(RACINE, "code")
+    if os.path.isdir(src_code):
+        cible = os.path.join(PUBLIC, "code")
+        shutil.rmtree(cible, ignore_errors=True)
+        shutil.copytree(src_code, cible, ignore=shutil.ignore_patterns("__pycache__", "*.json"))
 
     charges = charger_contenu()
 

@@ -64,18 +64,18 @@ contient. C'est aussi le premier algorithme dont on démontre la terminaison et 
 <div class="retenir"><p class="lab">Théorème (division euclidienne)</p>
 <p>Soient \(a\in\Z\) et \(b\in\Z^*\). Il existe un <strong>unique</strong> couple
 \((q,r)\in\Z^2\) tel que</p>
-\[a=bq+r \qquad\text{et}\qquad 0\le r<|b|.\]
+\[a=bq+r \qquad\text{et}\qquad 0\le r\lt |b|.\]
 </div><div class="demo"><p class="lab">Démonstration</p>
-<p><strong>Existence.</strong> Supposons \(b>0\) (le cas \(b<0\) s'en déduit en changeant le signe
+<p><strong>Existence.</strong> Supposons \(b\gt 0\) (le cas \(b\lt 0\) s'en déduit en changeant le signe
 de \(q\)). Considérons l'ensemble</p>
 \[S=\{a-bk\ ;\ k\in\Z\}\cap\N.\]
 <p>\(S\) est non vide : en prenant \(k=-|a|\), on obtient \(a+b|a|\ge a+|a|\ge0\) car \(b\ge1\).</p>
 <p>\(S\) est une partie non vide de \(\N\), elle admet donc un plus petit élément \(r=a-bq\).</p>
-<p>Montrons \(r<b\). Si l'on avait \(r\ge b\), alors \(r-b=a-b(q+1)\ge0\) appartiendrait à \(S\)
+<p>Montrons \(r\lt b\). Si l'on avait \(r\ge b\), alors \(r-b=a-b(q+1)\ge0\) appartiendrait à \(S\)
 tout en étant strictement plus petit que \(r\) — contradiction avec la minimalité.</p>
-<p>Donc \(0\le r<b\) et \(a=bq+r\).</p>
-<p><strong>Unicité.</strong> Supposons \(a=bq+r=bq'+r'\) avec \(0\le r,r'<b\). Alors
-\(b(q-q')=r'-r\), donc \(b\mid r'-r\). Or \(|r'-r|<b\), et le seul multiple de \(b\) de valeur
+<p>Donc \(0\le r\lt b\) et \(a=bq+r\).</p>
+<p><strong>Unicité.</strong> Supposons \(a=bq+r=bq'+r'\) avec \(0\le r,r'\lt b\). Alors
+\(b(q-q')=r'-r\), donc \(b\mid r'-r\). Or \(|r'-r|\lt b\), et le seul multiple de \(b\) de valeur
 absolue strictement inférieure à \(b\) est \(0\). Donc \(r=r'\), puis \(q=q'\) car \(b\neq0\).</p>
 <p class="cqfd">∎</p></div>
 
@@ -104,23 +104,23 @@ convention \(\pgcd(a,0)=|a|\).</p>
 
 <div class="retenir"><p class="lab">Théorème (terminaison et coût)</p>
 <p>L'algorithme d'Euclide termine, et le nombre de divisions effectuées pour \(\pgcd(a,b)\)
-avec \(a>b>0\) est majoré par</p>
+avec \(a\gt b\gt 0\) est majoré par</p>
 \[5\log_{10} b + O(1),\qquad\text{soit } O(\log b)\ \text{divisions.}\]
 <p>Le pire cas est atteint par deux termes consécutifs de la suite de Fibonacci.</p>
 </div><div class="demo"><p class="lab">Démonstration</p>
-<p><strong>Terminaison.</strong> Les restes successifs \(r_0=b>r_1>r_2>\dots\ge0\) forment une
+<p><strong>Terminaison.</strong> Les restes successifs \(r_0=b\gt r_1\gt r_2\gt \dots\ge0\) forment une
 suite d'entiers naturels strictement décroissante. Une telle suite est finie, l'algorithme
 s'arrête donc.</p>
 <p><strong>Coût.</strong> Montrons qu'en deux étapes le reste est au moins divisé par deux,
-c'est-à-dire \(r_{k+2}<\tfrac12 r_k\).</p>
+c'est-à-dire \(r_{k+2}\lt \tfrac12 r_k\).</p>
 <p>Deux cas, en écrivant \(r_k=r_{k+1}q+r_{k+2}\) :</p>
 <ul>
-<li>si \(r_{k+1}\le\tfrac12 r_k\), alors \(r_{k+2}<r_{k+1}\le\tfrac12 r_k\) ;</li>
-<li>si \(r_{k+1}>\tfrac12 r_k\), alors le quotient vaut \(q=1\), donc
-\(r_{k+2}=r_k-r_{k+1}<r_k-\tfrac12 r_k=\tfrac12 r_k\).</li>
+<li>si \(r_{k+1}\le\tfrac12 r_k\), alors \(r_{k+2}\lt r_{k+1}\le\tfrac12 r_k\) ;</li>
+<li>si \(r_{k+1}\gt \tfrac12 r_k\), alors le quotient vaut \(q=1\), donc
+\(r_{k+2}=r_k-r_{k+1}\lt r_k-\tfrac12 r_k=\tfrac12 r_k\).</li>
 </ul>
-<p>Dans les deux cas \(r_{k+2}<\tfrac12 r_k\). Après \(2m\) étapes le reste est donc
-\(<b/2^m\) ; il devient nul dès que \(2^m>b\), c'est-à-dire pour \(m>\log_2 b\).</p>
+<p>Dans les deux cas \(r_{k+2}\lt \tfrac12 r_k\). Après \(2m\) étapes le reste est donc
+\(\lt b/2^m\) ; il devient nul dès que \(2^m\gt b\), c'est-à-dire pour \(m\gt \log_2 b\).</p>
 <p>Le nombre d'étapes est donc \(O(\log b)\).</p>
 <p class="cqfd">∎</p></div>
 
@@ -191,139 +191,249 @@ for k in [10, 20, 30]:
 \[\pgcd(a,b)\times\ppcm(a,b)=d\times d\,a'b'=(da')(db')=ab.\]
 </div><div class="prof"><p class="lab">Remarque</p><p>Le lemme de Gauss utilisé ici se démontre avec Bézout, qui fait l'objet du nœud
 suivant. On peut donc aussi lire cet exercice comme une motivation pour Bézout.</p></div></details></article></div></section>
-<section class="lesson" id="arith-bezout" data-part="Arithmétique de ℤ" data-num="1.2" data-title="Bézout et l&#x27;algorithme d&#x27;Euclide étendu" hidden><header class="lhead"><p class="eyebrow">Arithmétique de ℤ · Nœud 1.2<span class="meta">45 min</span></p><h2>Bézout et l&#x27;algorithme d&#x27;Euclide étendu</h2></header><div class="lbody"><p class="objectif">Trouver (u, v) tels que au + bv = pgcd(a, b), et en déduire un inverse modulaire.</p><div class="fiche"><dl><dt>Prérequis</dt><dd><a href="niveau-1.html#arith-euclide">Divisibilité, PGCD, algorithme d'Euclide</a></dd><dt>Ouvre sur</dt><dd><span class="rien">nœud terminal d'une branche</span></dd><dt>En licence</dt><dd><span class="badge l3">Vu en licence</span></dd></dl></div><div class="master"><p class="lab">Dans le master</p><p>C'est l'opération qui calcule la clé privée RSA à partir de l'exposant public : d = e⁻¹ mod φ(n).</p></div>
-<p class="lead">Euclide étendu est l'algorithme qui calcule la clé privée RSA. C'est aussi lui
-qui inverse un élément dans un corps fini, donc qui fait tourner AES et les courbes elliptiques.
-Il faut savoir le dérouler à la main.</p>
+<section class="lesson" id="arith-bezout" data-part="Arithmétique de ℤ" data-num="1.2" data-title="Bézout et l&#x27;algorithme d&#x27;Euclide étendu" hidden><header class="lhead"><p class="eyebrow">Arithmétique de ℤ · Nœud 1.2<span class="meta">45 min</span></p><h2>Bézout et l&#x27;algorithme d&#x27;Euclide étendu</h2></header><div class="lbody"><p class="objectif">Trouver (u, v) tels que au + bv = pgcd(a, b), et en déduire un inverse modulaire.</p><div class="fiche"><dl><dt>Prérequis</dt><dd><a href="niveau-1.html#arith-euclide">Divisibilité, PGCD, algorithme d'Euclide</a></dd><dt>Ouvre sur</dt><dd><span class="rien">nœud terminal d'une branche</span></dd><dt>En licence</dt><dd><span class="badge l3">Vu en licence</span></dd></dl></div><div class="master"><p class="lab">Dans le master</p><p>C'est l'opération qui calcule la clé privée RSA à partir de l'exposant public : d = e⁻¹ mod φ(n).</p></div><form class="qcm" data-role="entree" data-seuil="3"><p class="lab">Test d'entrée — as-tu besoin de ce nœud ?</p><fieldset class="qcm-q" data-bonne="1"><legend>1. Que vaut \(\pgcd(240, 46)\) ?</legend><label class="qcm-o"><input type="radio" name="q0" value="0"> <span>\(1\)</span></label><label class="qcm-o"><input type="radio" name="q0" value="1"> <span>\(2\)</span></label><label class="qcm-o"><input type="radio" name="q0" value="2"> <span>\(4\)</span></label><label class="qcm-o"><input type="radio" name="q0" value="3"> <span>\(6\)</span></label><p class="qcm-x" hidden>\(240=5\times46+10\), \(46=4\times10+6\), \(10=6+4\), \(6=4+2\), \(4=2\times2\) : le dernier reste non nul est 2.</p></fieldset><fieldset class="qcm-q" data-bonne="2"><legend>2. L'équation \(6x+9y=4\) a-t-elle des solutions entières ?</legend><label class="qcm-o"><input type="radio" name="q1" value="0"> <span>Oui, une seule</span></label><label class="qcm-o"><input type="radio" name="q1" value="1"> <span>Oui, une infinité</span></label><label class="qcm-o"><input type="radio" name="q1" value="2"> <span>Non, aucune</span></label><label class="qcm-o"><input type="radio" name="q1" value="3"> <span>On ne peut pas savoir</span></label><p class="qcm-x" hidden>\(6x+9y\) est toujours un multiple de \(\pgcd(6,9)=3\), et 3 ne divise pas 4.</p></fieldset><fieldset class="qcm-q" data-bonne="2"><legend>3. Quel est l'inverse de \(3\) modulo \(7\) ?</legend><label class="qcm-o"><input type="radio" name="q2" value="0"> <span>\(2\)</span></label><label class="qcm-o"><input type="radio" name="q2" value="1"> <span>\(4\)</span></label><label class="qcm-o"><input type="radio" name="q2" value="2"> <span>\(5\)</span></label><label class="qcm-o"><input type="radio" name="q2" value="3"> <span>3 n'est pas inversible modulo 7</span></label><p class="qcm-x" hidden>\(3\times5=15=2\times7+1\), donc \(3^{-1}\equiv5\pmod 7\).</p></fieldset><div class="qcm-bas"><button type="submit" class="btn">Corriger</button><p class="qcm-res" role="status" hidden></p></div></form><div class="temps"><div class="onglets" role="tablist"><button type="button" role="tab" class="onglet" aria-selected="true" data-t="0"><span class="o-n">1</span>Comprendre</button><button type="button" role="tab" class="onglet" aria-selected="false" data-t="1"><span class="o-n">2</span>Démontrer</button><button type="button" role="tab" class="onglet" aria-selected="false" data-t="2"><span class="o-n">3</span>Implémenter</button><button type="button" role="tab" class="onglet" aria-selected="false" data-t="3"><span class="o-n">4</span>S'exercer</button></div><div class="panneau" role="tabpanel" data-t="0">
+<h3>Le problème</h3>
+<p class="lead">Alice fabrique une clé RSA. Elle a choisi \(p=61\), \(q=53\), donc
+\(\varphi(n)=60\times52=3120\), et son exposant public \(e=17\). Il lui faut l'exposant privé :
+l'entier \(d\) tel que</p>
+\[17\,d\equiv1 \pmod{3120}.\]
+<p>Essayer \(d=1,2,3,\dots\) fonctionne ici (on trouve \(d=2753\) après 2753 essais). Avec une vraie
+clé, \(\varphi(n)\) a plus de 600 chiffres : aucune machine n'essaiera jamais tous les candidats.
+Il faut une méthode directe. C'est l'objet de ce nœud.</p>
 
-<h3>Le théorème de Bézout</h3>
-<div class="retenir"><p class="lab">Théorème (Bachet-Bézout)</p>
-<p>Soient \(a,b\in\Z\) non tous deux nuls, et \(d=\pgcd(a,b)\). Il existe \(u,v\in\Z\) tels que</p>
-\[au+bv=d.\]
-<p>De plus, \(d\) est <strong>le plus petit entier strictement positif</strong> de la forme
-\(au+bv\).</p>
-</div><div class="demo"><p class="lab">Démonstration</p>
-<p>Considérons \(S=\{au+bv\ ;\ u,v\in\Z\}\cap\N^*\).</p>
-<p><strong>\(S\) est non vide</strong> : en prenant \(u=a\), \(v=b\), on obtient \(a^2+b^2>0\).</p>
-<p>\(S\) est une partie non vide de \(\N^*\) : soit \(g=au_0+bv_0\) son plus petit élément.
-Montrons \(g=d\).</p>
-<p><strong>\(g\) divise \(a\).</strong> Divisons : \(a=gq+r\) avec \(0\le r<g\). Alors</p>
-\[r=a-gq=a-(au_0+bv_0)q=a(1-u_0q)+b(-v_0q),\]
-<p>donc \(r\) est de la forme \(au+bv\). Si \(r>0\), alors \(r\in S\) et \(r<g\), contredisant la
-minimalité de \(g\). Donc \(r=0\), c'est-à-dire \(g\mid a\).</p>
-<p>Le même raisonnement donne \(g\mid b\). Donc \(g\) est un diviseur commun, d'où \(g\le d\).</p>
-<p><strong>\(d\) divise \(g\).</strong> Comme \(d\mid a\) et \(d\mid b\), on a
-\(d\mid au_0+bv_0=g\), donc \(d\le g\).</p>
-<p>Les deux inégalités donnent \(g=d\), et le couple \((u_0,v_0)\) convient.</p>
-<p class="cqfd">∎</p></div>
+<h3>L'observation qui débloque tout</h3>
+<p>Chercher \(d\) avec \(17d\equiv1\pmod{3120}\), c'est chercher deux entiers \(d\) et \(k\) tels que</p>
+\[17\,d+3120\,k=1.\]
+<p>Autrement dit : écrire \(1\) comme combinaison de \(17\) et \(3120\). Or l'algorithme d'Euclide,
+quand on le déroule, fabrique justement des combinaisons de ses deux nombres de départ.</p>
 
-<div class="retenir"><p class="lab">Corollaires indispensables</p>
-<ul>
-<li><strong>Théorème de Bézout.</strong> \(\pgcd(a,b)=1 \iff \exists u,v,\ au+bv=1\).</li>
-<li><strong>Lemme de Gauss.</strong> Si \(a\mid bc\) et \(\pgcd(a,b)=1\), alors \(a\mid c\).</li>
-<li><strong>Inversibilité.</strong> \(a\) est inversible modulo \(n\) \(\iff \pgcd(a,n)=1\),
-et son inverse est le \(u\) de Bézout.</li>
-</ul>
-</div><div class="demo"><p class="lab">Démonstration</p>
-<p><strong>Lemme de Gauss.</strong> Par Bézout, \(au+bv=1\). Multiplions par \(c\) :</p>
-\[acu+bcv=c.\]
-<p>Or \(a\mid acu\) (évident) et \(a\mid bc\) par hypothèse, donc \(a\mid bcv\). La somme des deux
-étant \(c\), on a \(a\mid c\).</p>
-<p><strong>Inversibilité.</strong> Si \(\pgcd(a,n)=1\), Bézout donne \(au+nv=1\), donc
-\(au\equiv1\pmod n\) : \(u\) est l'inverse de \(a\).</p>
-<p>Réciproquement, si \(au\equiv1\pmod n\), il existe \(k\) avec \(au-1=kn\), soit
-\(au-kn=1\). Tout diviseur commun de \(a\) et \(n\) divise alors \(1\), donc
-\(\pgcd(a,n)=1\).</p>
-<p class="cqfd">∎</p></div>
-
-<h3>L'algorithme d'Euclide étendu</h3>
-<p>On déroule Euclide en gardant à chaque étape l'écriture du reste sous la forme \(au+bv\).
-Sur \(\pgcd(240,46)\) :</p>
-
+<h3>Un exemple entièrement à la main</h3>
+<p>Prenons \(a=240\) et \(b=46\). On déroule Euclide, mais on note à chaque ligne comment le reste
+s'écrit à partir de \(240\) et \(46\).</p>
 <div class="table-wrap"><table>
-<thead><tr><th>Division</th><th>Reste</th><th>Écriture \(240u+46v\)</th></tr></thead>
+<thead><tr><th>Division</th><th>Reste</th><th>Le reste, écrit \(240u+46v\)</th></tr></thead>
 <tbody>
-<tr><td>—</td><td>\(240\)</td><td>\(240\cdot 1+46\cdot 0\)</td></tr>
-<tr><td>—</td><td>\(46\)</td><td>\(240\cdot 0+46\cdot 1\)</td></tr>
-<tr><td>\(240=5\cdot46+10\)</td><td>\(10\)</td><td>\(240\cdot 1+46\cdot(-5)\)</td></tr>
-<tr><td>\(46=4\cdot10+6\)</td><td>\(6\)</td><td>\(240\cdot(-4)+46\cdot 21\)</td></tr>
-<tr><td>\(10=1\cdot6+4\)</td><td>\(4\)</td><td>\(240\cdot 5+46\cdot(-26)\)</td></tr>
-<tr><td>\(6=1\cdot4+2\)</td><td>\(2\)</td><td>\(240\cdot(-9)+46\cdot 47\)</td></tr>
-<tr><td>\(4=2\cdot2+0\)</td><td>\(0\)</td><td>fin</td></tr>
+<tr><td>départ</td><td>\(240\)</td><td>\(240\times1+46\times0\)</td></tr>
+<tr><td>départ</td><td>\(46\)</td><td>\(240\times0+46\times1\)</td></tr>
+<tr><td>\(240=5\times46+10\)</td><td>\(10\)</td><td>\(240\times1+46\times(-5)\)</td></tr>
+<tr><td>\(46=4\times10+6\)</td><td>\(6\)</td><td>\(240\times(-4)+46\times21\)</td></tr>
+<tr><td>\(10=1\times6+4\)</td><td>\(4\)</td><td>\(240\times5+46\times(-26)\)</td></tr>
+<tr><td>\(6=1\times4+2\)</td><td>\(2\)</td><td>\(240\times(-9)+46\times47\)</td></tr>
+<tr><td>\(4=2\times2+0\)</td><td>\(0\)</td><td>on s'arrête</td></tr>
 </tbody></table></div>
-
-<p>On lit \(\pgcd(240,46)=2\) et \(240\cdot(-9)+46\cdot47=-2160+2162=2\). ✓</p>
+<p>Chaque ligne se déduit des deux précédentes : <em>nouvelle ligne = avant-dernière − quotient ×
+dernière</em>. Par exemple, la ligne du reste 6 : \((0,1)-4\times(1,-5)=(-4,21)\).</p>
+<p>On lit le résultat sur la dernière ligne non nulle :
+\(\pgcd(240,46)=2\) et \(240\times(-9)+46\times47=-2160+2162=2\).</p>
 
 <div class="prof"><p class="lab">Le conseil</p>
-<p>Pour vérifier un calcul de Bézout, il suffit de recalculer \(au+bv\) : cela doit donner le
-PGCD. Fais-le systématiquement en examen, cela prend dix secondes et rattrape toutes les erreurs
-de signe.</p>
+<p>Vérifie toujours en recalculant \(au+bv\). Cela prend dix secondes et rattrape toutes les
+erreurs de signe, qui sont de loin les plus fréquentes dans ce calcul.</p>
 </div>
 
-<div class="code tex2jax_ignore"><div class="code-h"><p class="lab">Euclide étendu et l'inverse modulaire</p><span class="code-lang ">python</span><button type="button" class="copier">copier</button></div><pre>def euclide_etendu(a, b):
-    &quot;Renvoie (d, u, v) avec a*u + b*v = d = pgcd(a, b).&quot;
-    r, u, v = a, 1, 0          # invariant : r = a*u + b*v
-    r2, u2, v2 = b, 0, 1       # invariant : r2 = a*u2 + b*v2
-    while r2:
+<h3>Ce que l'on vient de découvrir, énoncé proprement</h3>
+<div class="retenir"><p class="lab">Théorème de Bachet-Bézout</p>
+<p>Soient \(a,b\in\Z\) non tous deux nuls et \(d=\pgcd(a,b)\). Il existe \(u,v\in\Z\) tels que</p>
+\[au+bv=d.\]
+<p>De plus, \(d\) est le plus petit entier strictement positif de la forme \(au+bv\).</p>
+</div><div class="retenir"><p class="lab">Trois conséquences</p>
+<ul>
+<li><strong>Bézout.</strong> \(\pgcd(a,b)=1\iff\) il existe \(u,v\) avec \(au+bv=1\).</li>
+<li><strong>Lemme de Gauss.</strong> Si \(a\mid bc\) et \(\pgcd(a,b)=1\), alors \(a\mid c\).</li>
+<li><strong>Inverse modulaire.</strong> \(a\) est inversible modulo \(n\iff\pgcd(a,n)=1\), et son
+inverse est le coefficient \(u\) de Bézout.</li>
+</ul>
+</div>
+
+<h3>Les deux pièges</h3>
+<div class="prof"><p class="lab">Attention</p>
+<p><strong>Piège 1.</strong> Si \(au+bv=6\), on ne peut <em>pas</em> conclure que \(\pgcd(a,b)=6\) :
+seulement que le pgcd <em>divise</em> 6. Exemple : \(2\times5+3\times(-1)=7\), et pourtant
+\(\pgcd(2,3)=1\). La réciproque n'est vraie que lorsque la combinaison vaut 1.</p>
+<p><strong>Piège 2.</strong> Le couple \((u,v)\) n'est pas unique. Si \((u,v)\) convient, alors
+\((u+b,\ v-a)\) convient aussi. L'algorithme en donne un, il y en a une infinité.</p>
+</div>
+
+<h3>Retour à Alice</h3>
+<p>Euclide étendu sur \((17,3120)\) donne \(17\times(-367)+3120\times2=1\). Donc
+\(d\equiv-367\equiv2753\pmod{3120}\), en trois divisions au lieu de 2753 essais.</p>
+<p class="suite"><button type="button" class="btn ghost aller" data-t="1">Temps suivant : Démontrer →</button></p></div><div class="panneau" role="tabpanel" data-t="1" hidden>
+<p class="lead">Trois énoncés à démontrer. Pour chacun : lis l'idée, écris la preuve en suivant
+le squelette, et seulement ensuite compare avec la démonstration complète.</p>
+
+<figure class="video"><video controls preload="metadata" playsinline src="videos/arith-bezout.mp4"></video><figcaption><span class="tag">Vidéo</span> Bachet-Bézout : la preuve par le plus petit élément <span class="dur">1 min 45</span></figcaption></figure><div class="preuve"><div class="retenir"><p class="lab">Théorème de Bachet-Bézout</p><p>Soient \(a,b\in\Z\) non tous deux nuls, \(d=\pgcd(a,b)\). Il existe \(u,v\in\Z\) tels que
+\(au+bv=d\).</p></div><div class="idee"><p class="lab">L'idée en une phrase</p><p>Parmi tous les entiers strictement positifs de la forme \(au+bv\), le plus petit divise
+\(a\) et \(b\) — sinon un reste de division serait encore plus petit.</p></div><div class="squelette"><p class="lab">Le squelette — complète chaque étape sur ta feuille</p><ol><li>Poser \(S=\{au+bv\ ;\ u,v\in\Z\}\cap\N^*\) et justifier que \(S\) est non vide.</li><li>Appeler \(g=au_0+bv_0\) le plus petit élément de \(S\). Pourquoi existe-t-il ?</li><li>Diviser \(a\) par \(g\) : \(a=gq+r\). Écrire \(r\) sous la forme \(au+bv\) et en déduire \(r=0\).</li><li>Faire de même pour \(b\). Conclure que \(g\le d\).</li><li>Montrer que \(d\mid g\), donc \(d\le g\). Conclure.</li></ol></div><details class="tex2jax_ignore"><summary>Voir la démonstration complète</summary><div class="demo"><p class="lab">Démonstration</p>
+<p>Soit \(S=\{au+bv\ ;\ u,v\in\Z\}\cap\N^*\).</p>
+<p><strong>\(S\) est non vide</strong> : avec \(u=a\), \(v=b\), on obtient \(a^2+b^2\gt 0\).</p>
+<p>Toute partie non vide de \(\N^*\) a un plus petit élément : notons-le \(g=au_0+bv_0\).</p>
+<p><strong>\(g\) divise \(a\).</strong> Division euclidienne : \(a=gq+r\) avec \(0\le r\lt g\). Alors</p>
+\[r=a-gq=a-(au_0+bv_0)q=a(1-u_0q)+b(-v_0q).\]
+<p>Donc \(r\) est de la forme \(au+bv\). Si \(r\gt 0\), alors \(r\in S\) et \(r\lt g\), ce qui contredit
+la minimalité de \(g\). Donc \(r=0\) et \(g\mid a\).</p>
+<p>Le même raisonnement donne \(g\mid b\). Ainsi \(g\) est un diviseur commun, donc \(g\le d\).</p>
+<p><strong>\(d\) divise \(g\).</strong> Comme \(d\mid a\) et \(d\mid b\), on a
+\(d\mid au_0+bv_0=g\), donc \(d\le g\).</p>
+<p>Les deux inégalités donnent \(g=d\) : le couple \((u_0,v_0)\) convient, et \(d\) est bien le
+plus petit élément strictement positif de la forme \(au+bv\).</p>
+<p class="cqfd">∎</p></div></details></div><div class="preuve"><div class="retenir"><p class="lab">Lemme de Gauss</p><p>Si \(a\mid bc\) et \(\pgcd(a,b)=1\), alors \(a\mid c\).</p></div><div class="idee"><p class="lab">L'idée en une phrase</p><p>On écrit \(1=au+bv\), puis on multiplie tout par \(c\) pour faire apparaître \(bc\).</p></div><div class="squelette"><p class="lab">Le squelette — complète chaque étape sur ta feuille</p><ol><li>Écrire la relation de Bézout pour \(a\) et \(b\).</li><li>Multiplier cette relation par \(c\).</li><li>Montrer que \(a\) divise chacun des deux termes du membre de gauche.</li></ol></div><details class="tex2jax_ignore"><summary>Voir la démonstration complète</summary><div class="demo"><p class="lab">Démonstration</p>
+<p>Comme \(\pgcd(a,b)=1\), Bézout donne \(u,v\) tels que \(au+bv=1\). En multipliant par \(c\) :</p>
+\[acu+bcv=c.\]
+<p>Or \(a\mid acu\), et \(a\mid bc\) par hypothèse donc \(a\mid bcv\). Donc \(a\) divise leur somme,
+qui est \(c\).</p>
+<p class="cqfd">∎</p></div></details></div><div class="preuve"><div class="retenir"><p class="lab">Inverse modulaire</p><p>\(a\) est inversible modulo \(n\) si et seulement si \(\pgcd(a,n)=1\). Dans ce cas, l'inverse
+est le coefficient \(u\) d'une relation \(au+nv=1\).</p></div><div class="idee"><p class="lab">L'idée en une phrase</p><p>« \(au\equiv1\pmod n\) » et « \(au+nv=1\) » sont la même phrase, écrite de deux façons.</p></div><div class="squelette"><p class="lab">Le squelette — complète chaque étape sur ta feuille</p><ol><li>Sens direct : partir de \(au+nv=1\) et réduire modulo \(n\).</li><li>Sens réciproque : traduire \(au\equiv1\pmod n\) en une égalité dans \(\Z\).</li><li>Montrer que tout diviseur commun de \(a\) et \(n\) divise alors \(1\).</li></ol></div><details class="tex2jax_ignore"><summary>Voir la démonstration complète</summary><div class="demo"><p class="lab">Démonstration</p>
+<p><strong>(\(\Leftarrow\))</strong> Si \(\pgcd(a,n)=1\), Bézout donne \(au+nv=1\). Modulo \(n\),
+le terme \(nv\) disparaît : \(au\equiv1\pmod n\). Donc \(u\) est l'inverse de \(a\).</p>
+<p><strong>(\(\Rightarrow\))</strong> Si \(au\equiv1\pmod n\), il existe \(k\in\Z\) avec
+\(au-1=kn\), soit \(au-kn=1\). Tout diviseur commun de \(a\) et \(n\) divise \(au-kn=1\), donc vaut
+\(\pm1\). Ainsi \(\pgcd(a,n)=1\).</p>
+<p class="cqfd">∎</p></div></details></div><div class="preuve"><div class="retenir"><p class="lab">Correction de l'algorithme d'Euclide étendu</p><p>L'algorithme qui maintient, pour chaque reste \(r_k\), un couple \((u_k,v_k)\) par la règle
+\((u_{k+1},v_{k+1})=(u_{k-1},v_{k-1})-q_k(u_k,v_k)\) renvoie bien \((d,u,v)\) avec \(au+bv=d\).</p></div><div class="idee"><p class="lab">L'idée en une phrase</p><p>La propriété \(r_k=au_k+bv_k\) est vraie au départ et se conserve à chaque étape : c'est un
+invariant de boucle.</p></div><div class="squelette"><p class="lab">Le squelette — complète chaque étape sur ta feuille</p><ol><li>Vérifier l'invariant pour les deux lignes de départ.</li><li>Supposer l'invariant vrai aux rangs \(k-1\) et \(k\), et calculer \(r_{k+1}=r_{k-1}-q_kr_k\).</li><li>Conclure avec le fait que le dernier reste non nul est le pgcd.</li></ol></div><details class="tex2jax_ignore"><summary>Voir la démonstration complète</summary><div class="demo"><p class="lab">Démonstration</p>
+<p><strong>Initialisation.</strong> \(r_0=a=a\times1+b\times0\) et \(r_1=b=a\times0+b\times1\).</p>
+<p><strong>Conservation.</strong> Supposons \(r_{k-1}=au_{k-1}+bv_{k-1}\) et \(r_k=au_k+bv_k\).
+La division \(r_{k-1}=q_kr_k+r_{k+1}\) donne</p>
+\[r_{k+1}=r_{k-1}-q_kr_k=a(u_{k-1}-q_ku_k)+b(v_{k-1}-q_kv_k)=au_{k+1}+bv_{k+1}.\]
+<p><strong>Conclusion.</strong> L'algorithme d'Euclide termine et son dernier reste non nul est
+\(d=\pgcd(a,b)\) (nœud précédent). L'invariant appliqué à ce reste donne \(d=au+bv\).</p>
+<p class="cqfd">∎</p></div></details></div><div class="prof"><p class="lab">Le conseil</p>
+<p>Les deux premières preuves reposent sur le même ressort que la division euclidienne : toute
+partie non vide de \(\N\) a un plus petit élément. La dernière introduit l'<em>invariant de
+boucle</em>, l'outil standard pour prouver qu'un algorithme est correct. Tu le retrouveras dans
+tout le cours de complexité.</p>
+</div><p class="suite"><button type="button" class="btn ghost aller" data-t="2">Temps suivant : Implémenter →</button></p></div><div class="panneau" role="tabpanel" data-t="2" hidden>
+<p class="lead">On écrit l'algorithme soi-même en Python, puis on confronte le résultat à
+SageMath. Les sorties affichées sont celles d'une exécution réelle.</p>
+<div class="code tex2jax_ignore"><div class="code-h"><p class="lab">Euclide étendu et inverse modulaire</p><span class="code-lang ">python</span><button type="button" class="copier">copier</button></div><pre>&quot;&quot;&quot;Nœud 1.2 — Bézout et l&#x27;algorithme d&#x27;Euclide étendu.&quot;&quot;&quot;
+
+
+def euclide_etendu(a, b):
+    &quot;&quot;&quot;Renvoie (d, u, v) avec a*u + b*v = d = pgcd(a, b).
+
+    Invariants maintenus à chaque tour de boucle :
+        r  = a*u  + b*v
+        r2 = a*u2 + b*v2
+    &quot;&quot;&quot;
+    r, u, v = a, 1, 0
+    r2, u2, v2 = b, 0, 1
+    while r2 != 0:
         q = r // r2
-        r, u, v, r2, u2, v2 = r2, u2, v2, r - q*r2, u - q*u2, v - q*v2
+        r, r2 = r2, r - q * r2
+        u, u2 = u2, u - q * u2
+        v, v2 = v2, v - q * v2
     return r, u, v
 
-d, u, v = euclide_etendu(240, 46)
-print(d, u, v, 240*u + 46*v)
 
 def inverse_mod(a, n):
+    &quot;&quot;&quot;Inverse de a modulo n, ou erreur si pgcd(a, n) != 1.&quot;&quot;&quot;
     d, u, _ = euclide_etendu(a, n)
     if d != 1:
-        raise ValueError(&quot;%d n&#x27;est pas inversible modulo %d&quot; % (a, n))
+        raise ValueError(&quot;%d n&#x27;est pas inversible modulo %d (pgcd = %d)&quot; % (a, n, d))
     return u % n
 
-print(inverse_mod(17, 3120))          # la cle privee RSA du manuel
-print(17 * inverse_mod(17, 3120) % 3120)</pre><pre class="sortie">2 -9 47 2
+
+if __name__ == &quot;__main__&quot;:
+    d, u, v = euclide_etendu(240, 46)
+    print(&quot;pgcd(240, 46) =&quot;, d, &quot; avec u =&quot;, u, &quot;et v =&quot;, v)
+    print(&quot;vérification : 240*u + 46*v =&quot;, 240 * u + 46 * v)
+
+    # La clé privée RSA : d = e^(-1) mod phi(n)
+    p, q, e = 61, 53, 17
+    phi = (p - 1) * (q - 1)
+    cle = inverse_mod(e, phi)
+    print(&quot;phi(n) =&quot;, phi, &quot; clé privée d =&quot;, cle, &quot; contrôle e*d mod phi =&quot;, e * cle % phi)
+
+    try:
+        inverse_mod(15, phi)
+    except ValueError as err:
+        print(&quot;refus attendu :&quot;, err)</pre><pre class="sortie">pgcd(240, 46) = 2  avec u = -9 et v = 47
+vérification : 240*u + 46*v = 2
+phi(n) = 3120  clé privée d = 2753  contrôle e*d mod phi = 1
+refus attendu : 15 n&#x27;est pas inversible modulo 3120 (pgcd = 15)</pre></div><p class="dl"><a href="code/niveau1/arith_bezout.py" download>Télécharger arith_bezout.py</a></p>
+<p>Les deux commentaires d'invariant dans la fonction sont exactement la démonstration du temps 2.
+Le dernier appel montre le cas d'échec : 15 et 3120 ont 15 pour pgcd, donc 15 ne peut pas servir
+d'exposant public.</p>
+<div class="code tex2jax_ignore"><div class="code-h"><p class="lab">Vérification SageMath</p><span class="code-lang sage">sagemath</span><button type="button" class="copier">copier</button></div><pre>print(xgcd(240, 46))            # (pgcd, u, v)
+print(inverse_mod(17, 3120))    # la clé privée RSA
+print(gcd(15, 3120))            # 15 n&#x27;est pas inversible modulo 3120</pre><pre class="sortie">(2, -9, 47)
 2753
-1</pre></div>
-
-<p>Le dernier calcul est exactement l'étape de génération de clé RSA : avec
-\(\varphi(n)=3120\) et \(e=17\), la clé privée est \(d=e^{-1}\bmod\varphi(n)=2753\).</p>
-
-<div class="code tex2jax_ignore"><div class="code-h"><p class="lab">Vérification</p><span class="code-lang sage">sagemath</span><button type="button" class="copier">copier</button></div><pre>print(xgcd(240, 46))                  # (d, u, v)
-print(inverse_mod(17, 3120))
-R = Integers(3120)
-print(R(17)^-1)</pre><pre class="sortie">(2, -9, 47)
-2753
-2753</pre></div>
-
-<h3 class="exos-h">Vérifie que tu as compris</h3>
-<article class="exo"><p class="exo-n">Exercice 1</p><div class="exo-q">
-<p>Déterminer l'inverse de \(7\) modulo \(26\) par l'algorithme d'Euclide étendu, puis déchiffrer
-le chiffrement affine \(y=7x+3 \bmod 26\).</p>
-</div><details class="tex2jax_ignore"><summary>Voir la correction</summary><div class="copie"><p class="lab">Correction</p>
-<p><u>Euclide.</u> \(26=3\times7+5\), \(7=1\times5+2\), \(5=2\times2+1\), \(2=2\times1+0\).
-Donc \(\pgcd(7,26)=1\).</p>
-<p><u>Remontée.</u></p>
-<p>\(1=5-2\times2\)</p>
-<p>\(=5-2\times(7-5)=3\times5-2\times7\)</p>
-<p>\(=3\times(26-3\times7)-2\times7=3\times26-11\times7\)</p>
-<p>Donc \(-11\times7\equiv1\pmod{26}\), soit \(7^{-1}\equiv-11\equiv\underline{15}\pmod{26}\).</p>
-<p><u>Déchiffrement.</u> De \(y=7x+3\) on tire \(x=7^{-1}(y-3)=15(y-3)=15y-45\), et
-\(-45\equiv7\pmod{26}\), d'où</p>
+15</pre></div><p class="dl"><a href="code/niveau1/arith_bezout.sage" download>Télécharger arith_bezout.sage</a></p><div class="atoi"><p class="lab">À toi</p>
+<p>Écris une version <strong>récursive</strong> de <code>euclide_etendu</code>, fondée sur
+l'égalité \(\pgcd(a,b)=\pgcd(b,\ a\bmod b)\). Si l'appel sur \((b,\ a\bmod b)\) renvoie
+\((d,u',v')\), quels \((u,v)\) faut-il renvoyer pour \((a,b)\) ?</p>
+<details class="tex2jax_ignore"><summary>Voir une solution</summary>
+<p>Si \(d=bu'+(a\bmod b)v'\) et \(a\bmod b=a-qb\) avec \(q=\lfloor a/b\rfloor\), alors
+\(d=av'+b(u'-qv')\). Donc \((u,v)=(v',\ u'-qv')\).</p>
+<div class="code tex2jax_ignore"><div class="code-h"><p class="lab">Version récursive</p><span class="code-lang ">python</span><button type="button" class="copier">copier</button></div><pre>def euclide_etendu_rec(a, b):
+    if b == 0:
+        return a, 1, 0
+    d, u1, v1 = euclide_etendu_rec(b, a % b)
+    return d, v1, u1 - (a // b) * v1</pre></div></details></div><p class="suite"><button type="button" class="btn ghost aller" data-t="3">Temps suivant : S'exercer →</button></p></div><div class="panneau" role="tabpanel" data-t="3" hidden>
+<p class="lead">Cinq exercices, du calcul direct au problème de master. Cherche sur une feuille,
+ouvre l'indice si tu bloques, et la correction seulement à la fin.</p>
+<article class="exo"><p class="exo-n">Exercice 1<span class="niv">Application</span></p><div class="exo-q">
+<p>Déterminer des entiers \(u,v\) tels que \(1071u+462v=\pgcd(1071,462)\).</p>
+</div><details class="indice tex2jax_ignore"><summary>Un indice</summary><div class="prof"><p>Déroule Euclide (trois divisions), puis remonte en exprimant chaque reste à partir des
+précédents.</p></div></details><details class="tex2jax_ignore"><summary>Voir la correction</summary><div class="copie"><p class="lab">Correction</p>
+<p>\(1071=2\times462+147\)</p>
+<p>\(462=3\times147+21\)</p>
+<p>\(147=7\times21+0\), donc \(\pgcd(1071,462)=21\).</p>
+<p><u>Remontée.</u> \(21=462-3\times147=462-3\times(1071-2\times462)=7\times462-3\times1071\).</p>
+<p>Donc <u>\(u=-3\), \(v=7\)</u>.</p>
+<p>Vérification : \(-3\times1071+7\times462=-3213+3234=21\). ✓</p>
+</div></details></article><article class="exo"><p class="exo-n">Exercice 2<span class="niv">Application</span></p><div class="exo-q">
+<p>Calculer l'inverse de \(7\) modulo \(26\), puis donner la formule de déchiffrement du
+chiffrement affine \(y=7x+3\bmod26\).</p>
+</div><details class="indice tex2jax_ignore"><summary>Un indice</summary><div class="prof"><p>L'inverse de 7 est le coefficient de 7 dans une relation \(7u+26v=1\). Ensuite, isole
+\(x\) dans \(y=7x+3\).</p></div></details><details class="tex2jax_ignore"><summary>Voir la correction</summary><div class="copie"><p class="lab">Correction</p>
+<p>\(26=3\times7+5\), \(7=1\times5+2\), \(5=2\times2+1\).</p>
+<p>\(1=5-2\times2=5-2\times(7-5)=3\times5-2\times7=3\times(26-3\times7)-2\times7=3\times26-11\times7\).</p>
+<p>Donc \(7^{-1}\equiv-11\equiv\underline{15}\pmod{26}\).</p>
+<p>De \(y=7x+3\) : \(x=15(y-3)=15y-45\), et \(-45\equiv7\pmod{26}\), d'où</p>
 \[x=15y+7 \bmod 26.\]
-</div><div class="prof"><p class="lab">Remarque</p><p>Vérification : \(x=1\) donne \(y=10\), et \(15\times10+7=157=6\times26+1\equiv1\). ✓</p></div></details></article>
-
-<article class="exo"><p class="exo-n">Exercice 2</p><div class="exo-q">
-<p>Résoudre dans \(\Z\) l'équation diophantienne \(15x+21y=9\). Combien y a-t-il de solutions ?</p>
-</div><details class="tex2jax_ignore"><summary>Voir la correction</summary><div class="copie"><p class="lab">Correction</p>
-<p><u>Condition d'existence.</u> \(\pgcd(15,21)=3\) et \(3\mid 9\) : il y a des solutions.</p>
-<p><u>Solution particulière.</u> Bézout sur \((15,21)\) : \(21=1\times15+6\), \(15=2\times6+3\),
-donc \(3=15-2\times6=15-2(21-15)=3\times15-2\times21\).</p>
-<p>En multipliant par 3 : \(9=9\times15-6\times21\), d'où \((x_0,y_0)=(9,-6)\).</p>
-<p><u>Solution générale.</u> Si \((x,y)\) est solution, \(15(x-9)=-21(y+6)\), soit après division
-par 3 : \(5(x-9)=-7(y+6)\). Comme \(\pgcd(5,7)=1\), Gauss donne \(7\mid x-9\), donc
-\(x=9+7k\) et alors \(y=-6-5k\).</p>
-\[\boxed{\ (x,y)=(9+7k,\ -6-5k),\quad k\in\Z\ }\]
-<p>Il y a donc une <u>infinité de solutions</u>, paramétrée par \(k\in\Z\).</p>
-</div><div class="prof"><p class="lab">Remarque</p><p>Schéma général : \(ax+by=c\) a des solutions si et seulement si \(\pgcd(a,b)\mid c\),
-et l'ensemble des solutions est une droite d'entiers de pas \(\big(\tfrac{b}{d},-\tfrac{a}{d}\big)\).</p></div></details></article></div></section>
+</div><div class="prof"><p class="lab">Remarque</p><p>Contrôle : \(x=1\) donne \(y=10\), et \(15\times10+7=157=6\times26+1\). ✓</p></div></details></article><article class="exo"><p class="exo-n">Exercice 3<span class="niv">Raisonnement</span></p><div class="exo-q">
+<p>Résoudre dans \(\Z^2\) l'équation \(15x+21y=9\).</p>
+</div><details class="indice tex2jax_ignore"><summary>Un indice</summary><div class="prof"><p>Trois étapes : y a-t-il des solutions (comparer 9 au pgcd) ? En trouver une par Bézout.
+Puis soustraire deux solutions et utiliser le lemme de Gauss.</p></div></details><details class="tex2jax_ignore"><summary>Voir la correction</summary><div class="copie"><p class="lab">Correction</p>
+<p><u>Existence.</u> \(\pgcd(15,21)=3\) et \(3\mid9\) : il y a des solutions.</p>
+<p><u>Une solution.</u> \(21=15+6\), \(15=2\times6+3\), donc
+\(3=15-2\times(21-15)=3\times15-2\times21\). En multipliant par 3 :
+\(9=9\times15-6\times21\). Solution particulière : \((9,-6)\).</p>
+<p><u>Toutes les solutions.</u> Si \((x,y)\) est solution, \(15(x-9)=-21(y+6)\), soit
+\(5(x-9)=-7(y+6)\). Comme \(\pgcd(5,7)=1\), Gauss donne \(7\mid x-9\) : \(x=9+7k\), puis
+\(y=-6-5k\).</p>
+<p>Réciproquement ces couples conviennent. Donc</p>
+\[(x,y)=(9+7k,\ -6-5k),\quad k\in\Z.\]
+</div><div class="prof"><p class="lab">Remarque</p><p>Schéma général : \(ax+by=c\) a des solutions si et seulement si \(\pgcd(a,b)\mid c\), et
+elles forment alors une « droite » d'entiers.</p></div></details></article><article class="exo"><p class="exo-n">Exercice 4<span class="niv">Raisonnement</span></p><div class="exo-q">
+<p>Montrer que si \(\pgcd(a,b)=1\) et \(\pgcd(a,c)=1\), alors \(\pgcd(a,bc)=1\).</p>
+</div><details class="indice tex2jax_ignore"><summary>Un indice</summary><div class="prof"><p>Écris les deux relations de Bézout, puis multiplie-les membre à membre.</p></div></details><details class="tex2jax_ignore"><summary>Voir la correction</summary><div class="copie"><p class="lab">Correction</p>
+<p>Bézout donne \(au+bv=1\) et \(au'+cv'=1\). En multipliant :</p>
+\[1=(au+bv)(au'+cv')=a\,(auu'+ucv'+bvu')+bc\,(vv').\]
+<p>On a écrit \(1\) sous la forme \(aU+(bc)V\). Par Bézout (sens réciproque, valable car la
+combinaison vaut 1), <u>\(\pgcd(a,bc)=1\)</u>.</p>
+</div><div class="prof"><p class="lab">Remarque</p><p>C'est la raison pour laquelle le produit de deux inversibles modulo \(n\) est encore
+inversible : \((\Z/n\Z)^{\times}\) est stable par produit.</p></div></details></article><article class="exo"><p class="exo-n">Exercice 5<span class="niv">Problème — vers le master</span></p><div class="exo-q">
+<p>Dans RSA, on prend \(n=pq\), \(\varphi=(p-1)(q-1)\), et un exposant public \(e\).</p>
+<ol>
+<li>Pourquoi faut-il \(\pgcd(e,\varphi)=1\) ?</li>
+<li>Pourquoi \(e\) est-il toujours impair ?</li>
+<li>Montrer que l'exposant privé \(d\) est unique modulo \(\varphi\).</li>
+</ol>
+</div><details class="indice tex2jax_ignore"><summary>Un indice</summary><div class="prof"><p>(1) À quelle condition \(e\) a-t-il un inverse modulo \(\varphi\) ? (2) Quelle est la
+parité de \(p-1\) ? (3) Suppose deux inverses \(d\) et \(d'\) et calcule \(d\,(e\,d')\) de deux
+façons.</p></div></details><details class="tex2jax_ignore"><summary>Voir la correction</summary><div class="copie"><p class="lab">Correction</p>
+<p><u>1.</u> L'exposant privé est l'inverse de \(e\) modulo \(\varphi\). Par le théorème de
+l'inverse modulaire, il existe si et seulement si \(\pgcd(e,\varphi)=1\).</p>
+<p><u>2.</u> \(p\) et \(q\) sont des premiers impairs, donc \(p-1\) et \(q-1\) sont pairs et
+\(\varphi\) est pair. Si \(e\) était pair, 2 diviserait \(e\) et \(\varphi\) : impossible.</p>
+<p><u>3.</u> Soient \(d,d'\) avec \(ed\equiv ed'\equiv1\pmod\varphi\). Alors</p>
+\[d\equiv d\cdot(ed')=(de)\cdot d'\equiv d'\pmod\varphi.\]
+<p>L'inverse est donc <u>unique modulo \(\varphi\)</u>.</p>
+</div><div class="prof"><p class="lab">Remarque</p><p>En pratique on fixe \(e=65537\) et on tire \(p,q\) jusqu'à ce que
+\(\pgcd(e,\varphi)=1\) : comme 65537 est premier, il suffit que \(p\not\equiv1\) et
+\(q\not\equiv1\pmod{65537}\).</p></div></details></article><form class="qcm" data-role="sortie" data-seuil="3"><p class="lab">Test de sortie — valide le nœud</p><fieldset class="qcm-q" data-bonne="1"><legend>1. On sait qu'il existe \(u,v\) avec \(au+bv=6\). Que peut-on affirmer ?</legend><label class="qcm-o"><input type="radio" name="q0" value="0"> <span>\(\pgcd(a,b)=6\)</span></label><label class="qcm-o"><input type="radio" name="q0" value="1"> <span>\(\pgcd(a,b)\) divise \(6\)</span></label><label class="qcm-o"><input type="radio" name="q0" value="2"> <span>\(6\) divise \(\pgcd(a,b)\)</span></label><label class="qcm-o"><input type="radio" name="q0" value="3"> <span>\(a\) et \(b\) sont pairs</span></label><p class="qcm-x" hidden>Le pgcd divise toute combinaison \(au+bv\). L'égalité n'est garantie que si la combinaison est la plus petite possible.</p></fieldset><fieldset class="qcm-q" data-bonne="2"><legend>2. Quel est l'inverse de \(10\) modulo \(21\) ?</legend><label class="qcm-o"><input type="radio" name="q1" value="0"> <span>\(2\)</span></label><label class="qcm-o"><input type="radio" name="q1" value="1"> <span>\(11\)</span></label><label class="qcm-o"><input type="radio" name="q1" value="2"> <span>\(19\)</span></label><label class="qcm-o"><input type="radio" name="q1" value="3"> <span>10 n'est pas inversible modulo 21</span></label><p class="qcm-x" hidden>\(\pgcd(10,21)=1\) donc l'inverse existe, et \(10\times19=190=9\times21+1\).</p></fieldset><fieldset class="qcm-q" data-bonne="1"><legend>3. « Si \(a\mid bc\) et \(a\nmid b\), alors \(a\mid c\). » Cet énoncé est :</legend><label class="qcm-o"><input type="radio" name="q2" value="0"> <span>Vrai, c'est le lemme de Gauss</span></label><label class="qcm-o"><input type="radio" name="q2" value="1"> <span>Faux : il faut \(\pgcd(a,b)=1\), pas seulement \(a\nmid b\)</span></label><label class="qcm-o"><input type="radio" name="q2" value="2"> <span>Vrai seulement si a est pair</span></label><label class="qcm-o"><input type="radio" name="q2" value="3"> <span>Faux dans tous les cas</span></label><p class="qcm-x" hidden>Contre-exemple : \(6\mid4\times9\), mais \(6\nmid4\) et \(6\nmid9\). Ne pas diviser n'est pas être premier avec.</p></fieldset><fieldset class="qcm-q" data-bonne="0"><legend>4. Pour deux entiers de 2048 bits, Euclide étendu effectue de l'ordre de :</legend><label class="qcm-o"><input type="radio" name="q3" value="0"> <span>quelques milliers de divisions</span></label><label class="qcm-o"><input type="radio" name="q3" value="1"> <span>\(2^{1024}\) divisions</span></label><label class="qcm-o"><input type="radio" name="q3" value="2"> <span>\(2^{2048}\) divisions</span></label><label class="qcm-o"><input type="radio" name="q3" value="3"> <span>un nombre imprévisible de divisions</span></label><p class="qcm-x" hidden>Le nombre de divisions est en \(O(\log b)\), soit au plus environ \(2\times2048\) ici.</p></fieldset><div class="qcm-bas"><button type="submit" class="btn">Corriger</button><p class="qcm-res" role="status" hidden></p></div></form><div class="retenir"><p class="lab">À retenir</p><ul><li>\(\pgcd(a,b)\) est le plus petit entier \(\gt 0\) de la forme \(au+bv\).</li><li>\(au+bv=1\iff\pgcd(a,b)=1\) ; pour une autre valeur, le pgcd la <em>divise</em> seulement.</li><li>Gauss : \(a\mid bc\) et \(\pgcd(a,b)=1\) entraînent \(a\mid c\).</li><li>\(a\) inversible modulo \(n\iff\pgcd(a,n)=1\) ; l'inverse est le \(u\) de Bézout.</li><li>Euclide étendu : nouvelle ligne = avant-dernière − quotient × dernière. Toujours vérifier \(au+bv\).</li></ul></div><p class="suite"></p></div></div></div></section>
 <section class="lesson" id="arith-congruences" data-part="Arithmétique de ℤ" data-num="1.3" data-title="Congruences et l&#x27;anneau ℤ/nℤ" hidden><header class="lhead"><p class="eyebrow">Arithmétique de ℤ · Nœud 1.3<span class="meta">45 min</span></p><h2>Congruences et l&#x27;anneau ℤ/nℤ</h2></header><div class="lbody"><p class="objectif">Calculer dans ℤ/nℤ et justifier que les opérations y sont bien définies.</p><div class="fiche"><dl><dt>Prérequis</dt><dd><a href="niveau-0.html#quotients">Relations d'équivalence et quotients</a>, <a href="niveau-1.html#arith-euclide">Divisibilité, PGCD, algorithme d'Euclide</a></dd><dt>Ouvre sur</dt><dd><a href="niveau-1.html#arith-chinois">Le théorème chinois des restes</a>, <a href="niveau-1.html#grp-base">Groupes, sous-groupes, ordre d'un élément</a></dd><dt>En licence</dt><dd><span class="badge l3">Vu en licence</span></dd></dl></div><div class="master"><p class="lab">Dans le master</p><p>L'arithmétique modulaire est le terrain de jeu de presque toute la cryptographie à clé publique.</p></div>
 <p class="lead">\(\Z/n\Z\) est l'objet le plus manipulé du master. On l'a construit au niveau 0
 comme quotient ; il s'agit maintenant d'y calculer avec aisance et de savoir exactement quand
@@ -344,9 +454,9 @@ une division est permise.</p>
 \(\pgcd(a,n)=1 \iff \exists u,\ au\equiv1\pmod n\).</p>
 <p><strong>Corps.</strong> \(\Z/n\Z\) est un corps si et seulement si tout élément non nul est
 inversible, c'est-à-dire si \(\pgcd(a,n)=1\) pour tout \(a\in\{1,\dots,n-1\}\).</p>
-<p>Si \(n\) est premier, aucun \(a<n\) ne partage de facteur avec \(n\) : c'est vrai.</p>
-<p>Si \(n\) n'est pas premier, écrivons \(n=ab\) avec \(1<a,b<n\). Alors \(\bar a\neq\bar0\) mais
-\(\pgcd(a,n)=a>1\), donc \(\bar a\) n'est pas inversible. Pire, \(\bar a\bar b=\bar n=\bar0\) :
+<p>Si \(n\) est premier, aucun \(a\lt n\) ne partage de facteur avec \(n\) : c'est vrai.</p>
+<p>Si \(n\) n'est pas premier, écrivons \(n=ab\) avec \(1\lt a,b\lt n\). Alors \(\bar a\neq\bar0\) mais
+\(\pgcd(a,n)=a\gt 1\), donc \(\bar a\) n'est pas inversible. Pire, \(\bar a\bar b=\bar n=\bar0\) :
 \(\bar a\) est un diviseur de zéro.</p>
 <p class="cqfd">∎</p></div>
 
@@ -1116,14 +1226,14 @@ petit entier \(k\ge1\) tel que \(x^{k}=e\).</p>
 <p><strong>Propriété fondamentale.</strong> \(x^{m}=e \iff \ord(x)\mid m\).</p>
 </div><div class="demo"><p class="lab">Démonstration</p>
 <p>Notons \(d=\ord(x)\), qui existe : les puissances \(x,x^2,x^3,\dots\) ne peuvent pas être
-toutes distinctes dans un ensemble fini, donc \(x^{i}=x^{j}\) pour certains \(i<j\), d'où
+toutes distinctes dans un ensemble fini, donc \(x^{i}=x^{j}\) pour certains \(i\lt j\), d'où
 \(x^{j-i}=e\) avec \(j-i\ge1\).</p>
 <p><strong>(\(\Leftarrow\))</strong> Si \(d\mid m\), écrivons \(m=dk\) ; alors
 \(x^{m}=(x^{d})^{k}=e^{k}=e\).</p>
 <p><strong>(\(\Rightarrow\))</strong> Supposons \(x^{m}=e\). Division euclidienne : \(m=dq+r\)
-avec \(0\le r<d\). Alors</p>
+avec \(0\le r\lt d\). Alors</p>
 \[e=x^{m}=(x^{d})^{q}*x^{r}=e*x^{r}=x^{r}.\]
-<p>Si \(r>0\), cela contredirait la minimalité de \(d\). Donc \(r=0\), c'est-à-dire \(d\mid m\).</p>
+<p>Si \(r\gt 0\), cela contredirait la minimalité de \(d\). Donc \(r=0\), c'est-à-dire \(d\mid m\).</p>
 <p class="cqfd">∎</p></div>
 
 <div class="prof"><p class="lab">Le conseil</p>
@@ -1177,7 +1287,7 @@ Le déterminer pour \(n=8\), puis pour \(n=15\). Que remarque-t-on ?</p>
 \(7^2=49=1\). Donc \(H=\{1,3,5,7\}\) : <u>le groupe tout entier</u>.</p>
 <p><u>\(n=15\).</u> \(1^2=1\), \(4^2=16=1\), \(11^2=121=8\times15+1=1\), \(14^2=196=13\times15+1=1\).
 Donc \(H=\{1,4,11,14\}\), de cardinal 4 dans un groupe d'ordre \(\varphi(15)=8\).</p>
-<p><u>Remarque.</u> Dans les deux cas \(|H|>2\) : il y a plus de deux racines carrées de 1.
+<p><u>Remarque.</u> Dans les deux cas \(|H|\gt 2\) : il y a plus de deux racines carrées de 1.
 C'est impossible dans un corps, donc \(\Z/8\Z\) et \(\Z/15\Z\) n'en sont pas.</p>
 </div><div class="prof"><p class="lab">Remarque</p><p>C'est exactement l'anomalie qu'exploite Miller-Rabin, et celle qui permet de
 factoriser : \(\pgcd(4-1,15)=3\) et \(\pgcd(4+1,15)=5\).</p></div></details></article>
@@ -1252,7 +1362,7 @@ cardinaux :</p>
 \(d=\ord(x)\) est de cardinal exactement \(d\) (ces éléments sont distincts par minimalité de
 \(d\)). Lagrange donne \(d\mid N\).</p>
 <p><strong>(2)</strong> Écrivons \(N=d\cdot k\). Alors \(x^{N}=(x^{d})^{k}=e\).</p>
-<p><strong>(3)</strong> Soit \(x\neq e\). Alors \(\ord(x)>1\) et \(\ord(x)\mid N\) avec \(N\)
+<p><strong>(3)</strong> Soit \(x\neq e\). Alors \(\ord(x)\gt 1\) et \(\ord(x)\mid N\) avec \(N\)
 premier, donc \(\ord(x)=N\). Le sous-groupe \(\langle x\rangle\) a donc \(N\) éléments, c'est
 \(G\) tout entier.</p>
 <p class="cqfd">∎</p></div>
@@ -1319,7 +1429,7 @@ pas les puissances de \(g\).</p>
 </div><details class="tex2jax_ignore"><summary>Voir la correction</summary><div class="copie"><p class="lab">Correction</p>
 <p>Par Lagrange, \(\ord(g)\mid N\). Si \(\ord(g)\neq N\), alors \(\ord(g)\) est un diviseur
 strict de \(N\), donc il divise \(N/p\) pour au moins un facteur premier \(p\) de \(N\).</p>
-<p>En effet, si \(d\mid N\) et \(d<N\), alors \(N/d>1\) admet un diviseur premier \(p\), et
+<p>En effet, si \(d\mid N\) et \(d\lt N\), alors \(N/d\gt 1\) admet un diviseur premier \(p\), et
 \(d\mid N/p\).</p>
 <p>D'où le test :</p>
 <div class="prof"><p>\(g\) est d'ordre \(N\) si et seulement si \(g^{N/p}\neq e\)
@@ -1731,7 +1841,7 @@ abélien fini. Appliqué au groupe des points d'une courbe elliptique, il donne 
 <p>Tout groupe abélien fini \(G\) est isomorphe à un produit de groupes cycliques. Deux
 présentations équivalentes :</p>
 <p><strong>Facteurs invariants.</strong> Il existe une unique suite \(n_1\mid n_2\mid\dots\mid n_k\)
-(avec \(n_1>1\)) telle que</p>
+(avec \(n_1\gt 1\)) telle que</p>
 \[G\simeq \Z/n_1\Z\times\Z/n_2\Z\times\dots\times\Z/n_k\Z.\]
 <p><strong>Diviseurs élémentaires.</strong> \(G\) est isomorphe à un produit de
 \(\Z/p^{\alpha}\Z\) avec \(p\) premier, et cette décomposition est unique à l'ordre près.</p>
@@ -1872,7 +1982,7 @@ d'ordre \(d\) : il y en a exactement \(d\).</p>
 \(n_1\mid\dots\mid n_k\).</p>
 <p>Si \(k\ge2\), posons \(d=n_1\). Tout élément de \(\Z/n_1\Z\times\Z/n_2\Z\) tué par \(n_1\)
 donne une solution, et comme \(n_1\mid n_2\), le sous-groupe de \(n_1\)-torsion contient
-\(n_1\times n_1=n_1^2>n_1=d\) éléments.</p>
+\(n_1\times n_1=n_1^2\gt n_1=d\) éléments.</p>
 <p>Cela contredit l'hypothèse. Donc \(k=1\) et \(G\simeq\Z/n\Z\) est cyclique.</p>
 <p><u>Application à \(\Fq^{\times}\).</u> C'est un groupe abélien d'ordre \(q-1\). Pour
 \(d\mid q-1\), les solutions de \(x^{d}=1\) sont les racines du polynôme \(X^{d}-1\) dans le
@@ -2289,7 +2399,7 @@ pour tout \(k\) avec seulement \(d\) coefficients.</p>
 
 <div class="retenir"><p class="lab">Méthode</p>
 <p>Si \(\mu_A\) est de degré \(d\), la division euclidienne \(X^{k}=\mu_A Q+R\) avec
-\(\deg R<d\) donne</p>
+\(\deg R\lt d\) donne</p>
 \[A^{k}=\mu_A(A)Q(A)+R(A)=R(A).\]
 <p>Il suffit donc de calculer \(R=X^{k}\bmod\mu_A\), ce qui se fait par exponentiation rapide
 dans \(K[X]/(\mu_A)\).</p>
@@ -2298,7 +2408,7 @@ dans \(K[X]/(\mu_A)\).</p>
 <div class="prof"><p class="lab">Le conseil</p>
 <p>Retenir le mouvement : <em>calculer dans \(K[X]/(\mu_A)\) au lieu de \(\mathcal M_n(K)\)</em>.
 On remplace des produits de matrices \(n\times n\) par des produits de polynômes de degré
-\(<d\). C'est exactement la même idée que l'exponentiation modulaire, transposée aux polynômes
+\(\lt d\). C'est exactement la même idée que l'exponentiation modulaire, transposée aux polynômes
 — et c'est ce qui fera tourner les corps finis au niveau 3.</p>
 </div>
 

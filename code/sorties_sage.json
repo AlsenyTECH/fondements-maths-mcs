@@ -1,0 +1,6 @@
+{
+ "niveau1/arith_bezout.sage": {
+  "source": "print(xgcd(240, 46))            # (pgcd, u, v)\nprint(inverse_mod(17, 3120))    # la clé privée RSA\nprint(gcd(15, 3120))            # 15 n'est pas inversible modulo 3120\n",
+  "sortie": "(2, -9, 47)\n2753\n15\n"
+ }
+}

@@ -1,0 +1,33 @@
+{
+  "fichier": "arith-bezout.mp4",
+  "titre": "Bachet-Bézout : la preuve par le plus petit élément",
+  "scenes": [
+    {"legende": "L'énoncé",
+     "voix": "Le théorème de Bachet-Bézout. Si d est le P G C D de a et b, alors d s'écrit comme une combinaison de a et de b : a fois u, plus b fois v, égale d. Voyons pourquoi.",
+     "lignes": [["rouge", "Théorème de Bachet-Bézout"], ["bleu", "d = pgcd(a, b)"], ["bleu", "Il existe u, v entiers tels que   au + bv = d"]]},
+    {"legende": "On regarde toutes les combinaisons positives",
+     "voix": "L'idée est de regarder tous les entiers strictement positifs qui s'écrivent a fois u, plus b fois v. Appelons S cet ensemble. Il n'est pas vide : il contient a au carré plus b au carré.",
+     "lignes": [["bleu", "S = { au + bv > 0 ;  u, v entiers }"], ["bleu", "S n'est pas vide :   a·a + b·b > 0"]]},
+    {"legende": "Toute partie non vide de N a un plus petit élément",
+     "voix": "S est une partie non vide des entiers naturels. Elle possède donc un plus petit élément. Appelons-le g, et écrivons g égale a fois u zéro, plus b fois v zéro.",
+     "lignes": [["bleu", "g = plus petit élément de S"], ["bleu", "g = a·u₀ + b·v₀"]]},
+    {"efface": true, "legende": "Étape 1 : g divise a",
+     "voix": "Première étape : montrons que g divise a. On effectue la division euclidienne de a par g. a égale g fois q, plus r, avec un reste r strictement plus petit que g.",
+     "lignes": [["rouge", "1.  g divise a"], ["bleu", "a = g·q + r     avec   0 ≤ r < g"]]},
+    {"legende": "Le reste est encore une combinaison de a et b",
+     "voix": "Isolons le reste : r égale a, moins g fois q. Remplaçons g par son écriture. Puis regroupons les termes. Le reste r est, lui aussi, une combinaison de a et de b.",
+     "lignes": [["bleu", "r = a − g·q"], ["bleu", "r = a − (a·u₀ + b·v₀)·q"], ["bleu", "r = a·(1 − u₀q) + b·(−v₀q)"]]},
+    {"legende": "Un reste non nul contredirait la minimalité de g",
+     "voix": "Si r était strictement positif, il appartiendrait à S, tout en étant plus petit que g. C'est impossible, puisque g est le plus petit élément de S. Donc r est nul, et g divise a.",
+     "lignes": [["bleu", "Si r > 0 :   r est dans S   et   r < g"], ["rouge", "impossible : g est le plus petit !"], ["vert", "Donc r = 0 :   g divise a"]]},
+    {"legende": "g est un diviseur commun",
+     "voix": "Le même raisonnement montre que g divise b. Ainsi g est un diviseur commun de a et de b. Il est donc inférieur ou égal au plus grand d'entre eux, le P G C D.",
+     "lignes": [["bleu", "De même :   g divise b"], ["vert", "g diviseur commun   donc   g ≤ d"]]},
+    {"efface": true, "legende": "Étape 2 : d divise g",
+     "voix": "Deuxième étape, dans l'autre sens. d divise a, et d divise b. Donc d divise toute combinaison de a et de b, en particulier g. Par conséquent, d est inférieur ou égal à g.",
+     "lignes": [["rouge", "2.  d divise g"], ["bleu", "d divise a   et   d divise b"], ["bleu", "donc d divise   a·u₀ + b·v₀ = g"], ["vert", "donc   d ≤ g"]]},
+    {"legende": "Conclusion",
+     "voix": "Les deux inégalités donnent g égale d. Le P G C D s'écrit donc bien a fois u zéro, plus b fois v zéro. Retiens l'idée : prendre le plus petit élément positif d'une famille de combinaisons. Elle reviendra souvent.",
+     "lignes": [["bleu", "g ≤ d   et   d ≤ g"], ["vert", "g = d"], ["vert", "pgcd(a, b) = a·u₀ + b·v₀"]]}
+  ]
+}

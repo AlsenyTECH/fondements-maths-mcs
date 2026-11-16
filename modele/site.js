@@ -80,16 +80,87 @@
     var suite = document.body.dataset.suivant || '';
     if (last && suite){ next.setAttribute('href', suite); next.textContent = 'Niveau suivant →'; }
     else { next.setAttribute('href', last ? '#' + ids[0] : '#' + ids[i+1]);
-           next.textContent = i === 0 ? 'Commencer ce niveau →' : (last ? 'Revenir au début' : "J'ai compris, nœud suivant →"); }
+           var aTest = !!lessons[i].querySelector('.qcm[data-role="sortie"]');
+           next.textContent = i === 0 ? 'Commencer ce niveau →' : (last ? 'Revenir au début' : (aTest ? 'Nœud suivant →' : "J'ai compris, nœud suivant →")); }
     doneNote.hidden = !done[ids[i]] || i === 0;
     closeMenu();
     if (scroll) window.scrollTo(0, 0);
   }
-  next.addEventListener('click', function(){ if (current > 0){ done[ids[current]] = true; save(); refreshProgress(); } });
+  next.addEventListener('click', function(){
+    if (current > 0 && !lessons[current].querySelector('.qcm[data-role="sortie"]')){
+      done[ids[current]] = true; save(); refreshProgress();
+    }
+  });
   window.addEventListener('hashchange', function(){ show(location.hash.slice(1), true); });
 
   // ----- corrections : formules rendues à l'ouverture -----
   document.querySelectorAll('.exo details').forEach(function(d){
+    d.addEventListener('toggle', function(){
+      if (!d.open || !d.classList.contains('tex2jax_ignore')) return;
+      d.classList.remove('tex2jax_ignore');
+      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([d]).catch(function(){});
+    });
+  });
+
+  // ----- les quatre temps d'un nœud -----
+  function ouvrirTemps(section, t, defiler){
+    var onglets = section.querySelectorAll('.onglet'), panneaux = section.querySelectorAll('.panneau');
+    onglets.forEach(function(o){
+      var actif = Number(o.dataset.t) === t;
+      o.setAttribute('aria-selected', String(actif));
+      if (actif) o.classList.add('vu');
+    });
+    panneaux.forEach(function(p){ p.hidden = Number(p.dataset.t) !== t; });
+    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([section]).catch(function(){});
+    if (defiler){ var bloc = section.querySelector('.temps'); if (bloc) bloc.scrollIntoView({block:'start'}); }
+  }
+  lessons.forEach(function(section){
+    section.querySelectorAll('.onglet').forEach(function(o){
+      o.addEventListener('click', function(){ ouvrirTemps(section, Number(o.dataset.t), false); });
+    });
+    section.querySelectorAll('.aller').forEach(function(b){
+      b.addEventListener('click', function(){ ouvrirTemps(section, Number(b.dataset.t), true); });
+    });
+    var premier = section.querySelector('.onglet'); if (premier) premier.classList.add('vu');
+  });
+
+  // ----- QCM d'entrée et de sortie -----
+  document.querySelectorAll('form.qcm').forEach(function(f){
+    f.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var questions = f.querySelectorAll('.qcm-q'), bonnes = 0, repondues = 0;
+      questions.forEach(function(q){
+        var bonne = Number(q.dataset.bonne), choisi = q.querySelector('input:checked');
+        q.querySelectorAll('.qcm-o').forEach(function(l){ l.classList.remove('juste','faux'); });
+        if (!choisi) return;
+        repondues++;
+        var ok = Number(choisi.value) === bonne;
+        if (ok) bonnes++;
+        choisi.closest('.qcm-o').classList.add(ok ? 'juste' : 'faux');
+        q.querySelectorAll('.qcm-o')[bonne].classList.add('juste');
+        q.querySelector('.qcm-x').hidden = false;
+      });
+      var res = f.querySelector('.qcm-res'), seuil = Number(f.dataset.seuil), section = f.closest('section.lesson');
+      res.hidden = false;
+      if (repondues < questions.length){ res.className = 'qcm-res ko'; res.textContent = 'Réponds à toutes les questions.'; return; }
+      var reussi = bonnes >= seuil;
+      res.className = 'qcm-res ' + (reussi ? 'ok' : 'ko');
+      if (f.dataset.role === 'entree'){
+        res.textContent = reussi
+          ? bonnes + ' sur ' + questions.length + ' : tu maîtrises déjà l\'essentiel. Va directement au temps 4, ou passe au nœud suivant.'
+          : bonnes + ' sur ' + questions.length + ' : ce nœud est fait pour toi. Commence par le temps 1.';
+      } else {
+        res.textContent = reussi
+          ? bonnes + ' sur ' + questions.length + ' : nœud validé ✓'
+          : bonnes + ' sur ' + questions.length + ' : reprends les explications ci-dessus, puis réessaie.';
+        if (reussi && section){ done[section.id] = true; save(); refreshProgress(); doneNote.hidden = false; }
+      }
+      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([f]).catch(function(){});
+    });
+  });
+
+  // ----- blocs repliés hors exercices : formules rendues à l'ouverture -----
+  document.querySelectorAll('.preuve > details, .atoi > details, .exo .indice').forEach(function(d){
     d.addEventListener('toggle', function(){
       if (!d.open || !d.classList.contains('tex2jax_ignore')) return;
       d.classList.remove('tex2jax_ignore');
