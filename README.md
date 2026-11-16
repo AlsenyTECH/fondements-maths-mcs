@@ -76,3 +76,15 @@ et `\legendre{a}{p}` pour le symbole de Legendre.
 ## État de la rédaction
 
 Lancer `python3 build.py` affiche l'avancement nœud par nœud.
+
+## Ateliers de code
+
+Dans un nœud au nouveau gabarit, l'étudiant code dans la page : `atelier(...)` (dans `contenu/briques.py`)
+affiche un éditeur, exécute son programme dans le navigateur avec Pyodide et le confronte à des tests.
+`sage_atelier(...)` ouvre une cellule SageMath (service SageMathCell, connexion requise).
+
+- `docs/assets/pyodide/` contient Python pour le navigateur (14 Mo). Ce dossier n'est pas régénéré
+  par `build.py` : ne pas le supprimer.
+- Les ateliers ne fonctionnent pas en ouvrant les fichiers par double-clic. En local :
+  `cd docs && python3 -m http.server`, puis ouvrir http://localhost:8000.
+- Un nœud est validé quand son test de sortie **et** son atelier sont réussis.

@@ -2474,7 +2474,7 @@ de termes est impair. Restent</p>
 # NŒUD PILOTE — gabarit en quatre temps. Remplace la version ci-dessus de arith-bezout.
 # ═════════════════════════════════════════════════════════════════════════════
 
-from briques import (noeud, qcm, preuve, exercice, a_toi, a_retenir,
+from briques import (noeud, qcm, preuve, exercice, a_toi, a_retenir, atelier, sage_atelier,
                      code_fichier, code_sage, video, video_attente)
 
 _ENTREE = qcm("entree", [
@@ -2634,25 +2634,89 @@ boucle</em>, l'outil standard pour prouver qu'un algorithme est correct. Tu le r
 tout le cours de complexité.</p>
 """)
 
+_DEPART = r"""
+def euclide_etendu(a, b):
+    '''Renvoie (d, u, v) tels que a*u + b*v == d == pgcd(a, b).'''
+    # À toi. Rappel du tableau :
+    #   nouvelle ligne = avant-dernière - quotient * dernière
+    pass
+
+
+def inverse_mod(a, n):
+    '''Renvoie l'inverse de a modulo n, entre 0 et n-1.
+    Lève ValueError si a n'est pas inversible modulo n.'''
+    pass
+"""
+
+_G = "__import__('math').gcd"
+_TESTS = [
+    {"appel": "euclide_etendu(240, 46)", "attendu": "(d, u, v) avec d = 2 et 240*u + 46*v = 2",
+     "verif": "isinstance(r, tuple) and len(r) == 3 and r[0] == 2 and 240*r[1] + 46*r[2] == 2"},
+    {"appel": "euclide_etendu(1071, 462)", "attendu": "d = 21 et 1071*u + 462*v = 21",
+     "verif": "isinstance(r, tuple) and len(r) == 3 and r[0] == 21 and 1071*r[1] + 462*r[2] == 21"},
+    {"appel": "euclide_etendu(46, 240)", "attendu": "d = 2 et 46*u + 240*v = 2 (arguments dans l'autre ordre)",
+     "verif": "isinstance(r, tuple) and len(r) == 3 and r[0] == 2 and 46*r[1] + 240*r[2] == 2"},
+    {"appel": "euclide_etendu(17, 3120)", "attendu": "d = 1 et 17*u + 3120*v = 1",
+     "verif": "isinstance(r, tuple) and len(r) == 3 and r[0] == 1 and 17*r[1] + 3120*r[2] == 1"},
+    {"appel": "euclide_etendu(5, 0)", "attendu": "d = 5 et 5*u + 0*v = 5 (cas b = 0)",
+     "verif": "isinstance(r, tuple) and len(r) == 3 and r[0] == 5 and 5*r[1] == 5"},
+    {"appel": "euclide_etendu(2**127 - 1, 2**89 - 1)", "attendu": "d = 1 et la relation de Bézout, sur de grands entiers",
+     "verif": "isinstance(r, tuple) and len(r) == 3 and r[0] == 1 and (2**127 - 1)*r[1] + (2**89 - 1)*r[2] == 1"},
+    {"appel": "inverse_mod(17, 3120)", "attendu": "2753", "verif": "r == 2753"},
+    {"appel": "inverse_mod(7, 26)", "attendu": "15 (et non -11 : le résultat doit être entre 0 et n-1)", "verif": "r == 15"},
+    {"appel": "inverse_mod(10, 21)", "attendu": "19", "verif": "r == 19"},
+    {"appel": "inverse_mod(15, 3120)", "attendu": "une erreur ValueError, car pgcd(15, 3120) = 15", "leve": "ValueError"},
+]
+
 _IMPLEMENTER = r"""
-<p class="lead">On écrit l'algorithme soi-même en Python, puis on confronte le résultat à
-SageMath. Les sorties affichées sont celles d'une exécution réelle.</p>
-""" + code_fichier("niveau1/arith_bezout.py", "Euclide étendu et inverse modulaire") + r"""
-<p>Les deux commentaires d'invariant dans la fonction sont exactement la démonstration du temps 2.
-Le dernier appel montre le cas d'échec : 15 et 3120 ont 15 pour pgcd, donc 15 ne peut pas servir
-d'exposant public.</p>
-""" + code_sage("niveau1/arith_bezout.sage") + a_toi(r"""
-<p>Écris une version <strong>récursive</strong> de <code>euclide_etendu</code>, fondée sur
-l'égalité \(\pgcd(a,b)=\pgcd(b,\ a\bmod b)\). Si l'appel sur \((b,\ a\bmod b)\) renvoie
-\((d,u',v')\), quels \((u,v)\) faut-il renvoyer pour \((a,b)\) ?</p>
+<p class="lead">Ici, c'est toi qui codes. Tu écris les deux fonctions, tu lances les tests, et tu
+corriges jusqu'à ce qu'ils passent tous. Python tourne dans ton navigateur : rien à installer.</p>
+""" + atelier("arith-bezout", r"""
+<p>Complète les deux fonctions.</p>
+<ul>
+<li><code>euclide_etendu(a, b)</code> renvoie un triplet \((d,u,v)\) avec \(au+bv=d=\pgcd(a,b)\).
+Sers-toi du tableau du temps 1 : garde deux lignes en mémoire, et fabrique la suivante.</li>
+<li><code>inverse_mod(a, n)</code> utilise la première. Si le pgcd ne vaut pas 1, elle doit lever
+une erreur avec <code>raise ValueError(...)</code>.</li>
+</ul>
+<p><strong>Exécuter</strong> lance ton programme tel quel (pratique avec des <code>print</code>).
+<strong>Tester mon code</strong> le confronte à dix cas, dont des cas limites.</p>
+""", _DEPART, _TESTS,
+    r"""<p>Une solution possible. La tienne peut être différente et tout aussi juste : les tests
+vérifient la relation \(au+bv=d\), pas des valeurs précises de \(u\) et \(v\), puisqu'il en existe
+une infinité.</p>"""
+    + code_fichier("niveau1/arith_bezout.py", "Corrigé : Euclide étendu et inverse modulaire")) + r"""
+
+<h3>Confronte ton résultat à la référence</h3>
+<p>Ton programme passe les tests : il reste à le comparer à l'outil que les cryptographes
+utilisent. SageMath connaît déjà ces fonctions, sous les noms <code>xgcd</code> et
+<code>inverse_mod</code>.</p>
+""" + sage_atelier(r"""
+<p>Exécute la cellule, puis <strong>modifie-la</strong> : remplace les nombres par ceux d'un
+exercice du temps 4, et compare avec ton calcul à la main.</p>
+<p>Question à te poser : Sage renvoie-t-il les mêmes \(u\) et \(v\) que ton programme ? Si non,
+est-ce une erreur ?</p>
+""", r"""
+print(xgcd(240, 46))            # (pgcd, u, v)
+print(inverse_mod(17, 3120))    # la clé privée RSA
+print(gcd(15, 3120))            # pourquoi inverse_mod(15, 3120) échoue
+""") + prof(r"""
+<p>Deux programmes corrects peuvent donner des couples \((u,v)\) différents : si \((u,v)\)
+convient, \((u+b/d,\ v-a/d)\) aussi. Ce n'est pas une erreur. C'est pour cela qu'on vérifie
+toujours la <em>relation</em> \(au+bv=d\), jamais des valeurs apprises.</p>
+""") + a_toi(r"""
+<p>Pour aller plus loin : écris une version <strong>récursive</strong> de
+<code>euclide_etendu</code> dans l'atelier, fondée sur \(\pgcd(a,b)=\pgcd(b,\ a\bmod b)\), et
+vérifie qu'elle passe les mêmes tests. Si l'appel sur \((b,\ a\bmod b)\) renvoie \((d,u',v')\),
+que faut-il renvoyer pour \((a,b)\) ?</p>
 """, r"""
 <p>Si \(d=bu'+(a\bmod b)v'\) et \(a\bmod b=a-qb\) avec \(q=\lfloor a/b\rfloor\), alors
 \(d=av'+b(u'-qv')\). Donc \((u,v)=(v',\ u'-qv')\).</p>
 """ + code(r"""
-def euclide_etendu_rec(a, b):
+def euclide_etendu(a, b):
     if b == 0:
         return a, 1, 0
-    d, u1, v1 = euclide_etendu_rec(b, a % b)
+    d, u1, v1 = euclide_etendu(b, a % b)
     return d, v1, u1 - (a // b) * v1
 """, "python", None, "Version récursive"))
 

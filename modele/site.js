@@ -124,6 +124,25 @@
     var premier = section.querySelector('.onglet'); if (premier) premier.classList.add('vu');
   });
 
+  // ----- validation d'un nœud : toutes ses épreuves (QCM de sortie, atelier de code) -----
+  var CLE_ETATS = CLE + '-epreuves', etats = {};
+  try { etats = JSON.parse(localStorage.getItem(CLE_ETATS) || '{}') || {}; } catch(e){ etats = {}; }
+  function exigences(section){
+    var e = [];
+    if (section.querySelector('.qcm[data-role="sortie"]')) e.push('qcm');
+    if (section.querySelector('.atelier')) e.push('atelier');
+    return e;
+  }
+  function etape(section, cle){
+    if (!section) return [];
+    var id = section.id; etats[id] = etats[id] || {}; etats[id][cle] = true;
+    try { localStorage.setItem(CLE_ETATS, JSON.stringify(etats)); } catch(e){}
+    var manque = exigences(section).filter(function(k){ return !etats[id][k]; });
+    if (!manque.length){ done[id] = true; save(); refreshProgress(); doneNote.hidden = false; }
+    return manque;
+  }
+  window.MCS = { etape: etape };
+
   // ----- QCM d'entrée et de sortie -----
   document.querySelectorAll('form.qcm').forEach(function(f){
     f.addEventListener('submit', function(ev){
@@ -150,10 +169,12 @@
           ? bonnes + ' sur ' + questions.length + ' : tu maîtrises déjà l\'essentiel. Va directement au temps 4, ou passe au nœud suivant.'
           : bonnes + ' sur ' + questions.length + ' : ce nœud est fait pour toi. Commence par le temps 1.';
       } else {
-        res.textContent = reussi
-          ? bonnes + ' sur ' + questions.length + ' : nœud validé ✓'
-          : bonnes + ' sur ' + questions.length + ' : reprends les explications ci-dessus, puis réessaie.';
-        if (reussi && section){ done[section.id] = true; save(); refreshProgress(); doneNote.hidden = false; }
+        var manque = reussi ? etape(section, 'qcm') : [];
+        res.textContent = !reussi
+          ? bonnes + ' sur ' + questions.length + ' : reprends les explications ci-dessus, puis réessaie.'
+          : (manque.indexOf('atelier') >= 0
+              ? bonnes + ' sur ' + questions.length + ' : test réussi. Il reste l\'atelier de code (temps 3) pour valider le nœud.'
+              : bonnes + ' sur ' + questions.length + ' : nœud validé ✓');
       }
       if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([f]).catch(function(){});
     });

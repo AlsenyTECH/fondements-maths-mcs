@@ -229,7 +229,8 @@ def coquille(titre, body, niveau=None, suivant=None, accueil=False):
         data = ' data-niveau="%d"' % niveau.num
         if suivant:
             data += ' data-suivant="%s"' % suivant
-    script = "" if accueil else '<script defer src="assets/site.js"></script>'
+    script = "" if accueil else ('<script defer src="assets/site.js"></script>'
+                                     '<script defer src="assets/atelier.js"></script>')
     return """<!doctype html>
 <html lang="fr">
 <head>
@@ -434,8 +435,13 @@ def construire():
 
     os.makedirs(os.path.join(PUBLIC, "assets"), exist_ok=True)
     os.makedirs(os.path.join(PUBLIC, "videos"), exist_ok=True)
-    for f in ("style.css", "site.js"):
+    for f in ("style.css", "site.js", "atelier.js", "atelier-worker.js"):
         shutil.copy(os.path.join(MODELE, f), os.path.join(PUBLIC, "assets", f))
+
+    # Python dans le navigateur (Pyodide), pour les ateliers de code
+    pyo = os.path.join(MODELE, "vendor", "pyodide")
+    if os.path.isdir(pyo):
+        shutil.copytree(pyo, os.path.join(PUBLIC, "assets", "pyodide"), dirs_exist_ok=True)
 
     # MathJax embarqué : le site fonctionne sans connexion
     vendor = os.path.join(MODELE, "vendor", "tex-svg.js")

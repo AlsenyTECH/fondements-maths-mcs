@@ -171,3 +171,36 @@ def noeud(entree, comprendre, demontrer, implementer, exercer, sortie, retenir_)
         for i, (_, contenu) in enumerate(temps))
     return ('%s<div class="temps"><div class="onglets" role="tablist">%s</div>%s</div>'
             % (entree, onglets, panneaux))
+
+
+def atelier(ident, consigne, depart, tests, corrige):
+    """Atelier de code : l'étudiant complète `depart`, puis lance des tests cachés dans son navigateur.
+
+    tests  liste de dictionnaires :
+             {"appel": "f(2, 3)", "verif": "r == 5", "attendu": "5"}          vérifie le résultat r
+             {"appel": "f(0)", "leve": "ValueError", "attendu": "une ValueError"}  attend une exception
+           `verif` est une expression Python ; elle doit tester la propriété, pas une valeur
+           arbitraire (plusieurs réponses peuvent être justes).
+    """
+    return ('<div class="atelier" data-id="%s"><p class="lab">Atelier — à toi de coder</p>%s'
+            '<textarea class="at-code" spellcheck="false" autocapitalize="off" autocomplete="off" '
+            'autocorrect="off" rows="%d" aria-label="Ton code Python">%s</textarea>'
+            '<script type="application/json" class="atelier-tests">%s</script>'
+            '<div class="atelier-b"><button type="button" class="btn ghost at-executer">Exécuter</button>'
+            '<button type="button" class="btn at-tester">Tester mon code</button>'
+            '<button type="button" class="at-reinit">Réinitialiser</button>'
+            '<span class="atelier-etat" role="status"></span></div>'
+            '<div class="atelier-res" hidden></div>'
+            '<details class="atelier-corrige tex2jax_ignore" hidden><summary>Voir le corrigé (après avoir essayé)</summary>%s</details>'
+            '</div>'
+            % (ident, consigne, depart.strip("\n").count("\n") + 3, html.escape(depart.strip("\n")),
+               json.dumps(tests, ensure_ascii=False).replace("</", "<\\/"), corrige))
+
+
+def sage_atelier(consigne, depart):
+    """Cellule SageMath modifiable (service SageMathCell), pour confronter son résultat à la référence."""
+    return ('<div class="sage-atelier"><p class="lab">Vérifie avec SageMath</p>%s'
+            '<div class="sage-cellule tex2jax_ignore" hidden><script type="text/x-sage">%s</script></div>'
+            '<div class="atelier-b"><button type="button" class="btn ghost sage-ouvrir">Ouvrir la cellule SageMath</button>'
+            '<span class="sage-msg" role="status"></span></div></div>'
+            % (consigne, html.escape(depart.strip("\n"))))

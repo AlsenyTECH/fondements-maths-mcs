@@ -298,3 +298,29 @@ h2.sec{font-family:var(--f-hand);color:var(--rouge);font-size:2.1rem;margin:36px
 @media print{.onglets,.suite,.qcm-bas{display:none}.panneau[hidden]{display:flex !important}.preuve details,.atoi details{display:block}}
 .lesson{overflow-x:clip}
 .temps{scroll-margin-top:64px}
+
+/* ---------- atelier de code ---------- */
+.atelier,.sage-atelier{border:2px solid var(--prof);border-radius:4px;background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.atelier > .lab,.sage-atelier > .lab{color:var(--prof);margin:0}
+.atelier p,.sage-atelier p{margin:2px 0}
+.atelier ul,.atelier ol{margin:4px 0;padding-left:1.3em}
+.at-code{width:100%;font-family:var(--f-code);font-size:.9rem;line-height:1.55;color:var(--code-fg);background:var(--code-bg);
+  border:1px solid var(--code-line);border-radius:4px;padding:12px 14px;resize:vertical;tab-size:4;white-space:pre;overflow:auto;min-height:220px}
+.atelier-b{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.atelier-b button[disabled]{opacity:.5;cursor:default}
+.at-reinit{border:0;background:none;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:.9rem;padding:4px}
+.atelier-etat,.sage-msg{font-size:.92rem;color:var(--muted)}
+.atelier-res{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:6px}
+.at-ok{color:var(--prof);font-weight:700}
+.at-ko{color:var(--rouge);font-weight:700}
+.at-info{color:var(--muted)}
+.at-sortie{margin:0;padding:10px 12px;background:var(--sortie-bg);color:var(--sortie-fg);border-radius:4px;font-family:var(--f-code);font-size:.86rem;overflow-x:auto}
+.at-tests{list-style:none;padding:0 !important;margin:0;display:flex;flex-direction:column;gap:5px}
+.at-tests li{padding:6px 10px;border-radius:4px;font-size:.92rem;border-left:4px solid;overflow-wrap:anywhere}
+.at-tests li.ok{border-color:var(--prof);background:var(--prof-bg)}
+.at-tests li.ko{border-color:var(--rouge);background:var(--rouge-bg)}
+.at-tests code,.atelier-res code{font-family:var(--f-code);font-size:.88em}
+.atelier-corrige > summary{cursor:pointer;font-weight:700;color:var(--pen);padding:4px 0;width:max-content;max-width:100%}
+.atelier-corrige[open] > summary{margin-bottom:8px}
+.atelier-corrige > * + *{margin-top:10px}
+.sage-cellule{min-width:0;overflow-x:auto}
