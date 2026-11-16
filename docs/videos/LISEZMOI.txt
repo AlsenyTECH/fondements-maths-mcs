@@ -1,0 +1,5 @@
+Déposer ici les fichiers .mp4 des vidéos.
+
+Un nœud affiche sa vidéo dès que le fichier existe et qu'il est déclaré dans le contenu :
+    video("arith-euclide.mp4", "L'algorithme d'Euclide, pas à pas", "4 min 12")
+Sans fichier déclaré, le nœud affiche un emplacement « vidéo à venir », qui reste présentable.

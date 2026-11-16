@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fondements mathématiques du Master MCS</title>
+<meta name="description" content="Les fondements mathématiques du Master Mathématiques, Cryptographie et Sécurité : arithmétique, groupes, anneaux, modules, corps finis, courbes, codes, réseaux et complexité.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Kalam:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']],
+    macros: {
+      N:'\\mathbb{N}', Z:'\\mathbb{Z}', Q:'\\mathbb{Q}', R:'\\mathbb{R}',
+      C:'\\mathbb{C}', F:'\\mathbb{F}', P:'\\mathbb{P}', A:'\\mathbb{A}',
+      Vect:'\\operatorname{Vect}', Ker:'\\operatorname{Ker}', Img:'\\operatorname{Im}',
+      pgcd:'\\operatorname{pgcd}', ppcm:'\\operatorname{ppcm}', ord:'\\operatorname{ord}',
+      Card:'\\operatorname{Card}', rg:'\\operatorname{rg}', car:'\\operatorname{car}',
+      Tr:'\\operatorname{Tr}', Nm:'\\operatorname{N}', Gal:'\\operatorname{Gal}',
+      Frob:'\\operatorname{Frob}', wt:'\\operatorname{wt}', dmin:'d_{\\min}',
+      Fq:'\\mathbb{F}_q', Fp:'\\mathbb{F}_p', Zn:'\\mathbb{Z}/n\\mathbb{Z}',
+      Znz:'(\\mathbb{Z}/n\\mathbb{Z})^{\\times}', legendre:['\\left(\\frac{#1}{#2}\\right)',2]
+    }
+  },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
+             ignoreHtmlClass: 'tex2jax_ignore' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<!-- MathJax est embarqué dans le dépôt : le site rend les formules même hors ligne.
+     Si le fichier local manque, on retombe sur le CDN. -->
+<script defer src="assets/mathjax/tex-svg.js"
+        onerror="var s=document.createElement('script');s.defer=true;
+                 s.src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js';
+                 document.head.appendChild(s);"></script>
+</head>
+<body>
+<div class="accueil">
+  <header class="hero">
+    <h1>Fondements mathématiques<br>du Master MCS</h1>
+    <p>Le master Mathématiques, Cryptographie et Sécurité repose sur un socle algébrique précis.
+    Ce site le met à plat : 62 nœuds, cinq niveaux, chacun relié à ce qu'il ouvre dans le master.
+    <strong>36 d'entre eux ne sont pas vus en licence</strong> — ce sont eux qui font décrocher.</p>
+  </header>
+
+  <h2 class="sec">La carte</h2>
+  <p>Chaque boîte est un module ; les flèches sont les dépendances réelles, déduites nœud par nœud.
+  Rien ne se lit de haut en bas par hasard : une flèche veut dire « sans ceci, le reste ne passe pas ».</p>
+  <div class="carte-wrap"><svg class="carte" viewBox="0 0 1240 826" role="img" aria-label="Carte des dépendances entre les modules du master">
+<defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" opacity=".45"/></marker></defs>
+<rect class="bande" x="0" y="16" width="1240" height="152" rx="4"/>
+<text class="bande-t" x="16" y="50">Niveau 0</text>
+<text class="bande-t" x="16" y="72" style="font-size:13px">Le socle commun</text>
+<text class="bande-t" x="16" y="210">Niveau 1</text>
+<text class="bande-t" x="16" y="232" style="font-size:13px">Le tronc</text>
+<rect class="bande" x="0" y="336" width="1240" height="152" rx="4"/>
+<text class="bande-t" x="16" y="370">Niveau 2</text>
+<text class="bande-t" x="16" y="392" style="font-size:13px">La charnière</text>
+<text class="bande-t" x="16" y="530">Niveau 3</text>
+<text class="bande-t" x="16" y="552" style="font-size:13px">La fabrique</text>
+<rect class="bande" x="0" y="656" width="1240" height="152" rx="4"/>
+<text class="bande-t" x="16" y="690">Niveau 4</text>
+<text class="bande-t" x="16" y="712" style="font-size:13px">Les applications</text>
+<path class="lk" marker-end="url(#fl)" d="M685.0,134.0 C685.0,179.0 461.0,179.0 461.0,220.0"/>
+<path class="lk" marker-end="url(#fl)" d="M461.0,294.0 C461.0,259.0 685.0,259.0 685.0,220.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,134.0 C685.0,179.0 685.0,179.0 685.0,220.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,134.0 C685.0,179.0 909.0,179.0 909.0,220.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,294.0 C685.0,339.0 461.0,339.0 461.0,380.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,134.0 C685.0,259.0 461.0,259.0 461.0,380.0"/>
+<path class="lk" marker-end="url(#fl)" d="M461.0,294.0 C461.0,339.0 461.0,339.0 461.0,380.0"/>
+<path class="lk" marker-end="url(#fl)" d="M461.0,454.0 C461.0,419.0 685.0,419.0 685.0,380.0"/>
+<path class="lk" marker-end="url(#fl)" d="M461.0,454.0 C461.0,419.0 909.0,419.0 909.0,380.0"/>
+<path class="lk" marker-end="url(#fl)" d="M909.0,294.0 C909.0,339.0 909.0,339.0 909.0,380.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,294.0 C685.0,339.0 909.0,339.0 909.0,380.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,454.0 C685.0,499.0 573.0,499.0 573.0,540.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,294.0 C685.0,419.0 573.0,419.0 573.0,540.0"/>
+<path class="lk" marker-end="url(#fl)" d="M573.0,614.0 C573.0,579.0 797.0,579.0 797.0,540.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,454.0 C685.0,499.0 797.0,499.0 797.0,540.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,294.0 C685.0,419.0 797.0,419.0 797.0,540.0"/>
+<path class="lk" marker-end="url(#fl)" d="M461.0,294.0 C461.0,499.0 247.4,499.0 247.4,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,134.0 C685.0,419.0 247.4,419.0 247.4,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,294.0 C685.0,499.0 247.4,499.0 247.4,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M909.0,454.0 C909.0,579.0 466.2,579.0 466.2,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M461.0,454.0 C461.0,579.0 466.2,579.0 466.2,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M797.0,614.0 C797.0,659.0 466.2,659.0 466.2,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,294.0 C685.0,499.0 466.2,499.0 466.2,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M909.0,294.0 C909.0,499.0 685.0,499.0 685.0,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M797.0,614.0 C797.0,659.0 685.0,659.0 685.0,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,134.0 C685.0,419.0 685.0,419.0 685.0,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,454.0 C685.0,579.0 685.0,579.0 685.0,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M909.0,294.0 C909.0,499.0 903.8,499.0 903.8,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M909.0,454.0 C909.0,579.0 903.8,579.0 903.8,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M685.0,134.0 C685.0,419.0 1122.6,419.0 1122.6,700.0"/>
+<path class="lk" marker-end="url(#fl)" d="M461.0,294.0 C461.0,499.0 1122.6,499.0 1122.6,700.0"/>
+<a class="n" href="niveau-0.html#log-quantif"><title>Le vocabulaire commun à tous les cours du master, et les quatre façons de démontrer.</title>
+<rect x="585.0" y="64.0" width="200.0" height="70" rx="4"/>
+<text class="tt" x="597.0" y="87.0">Langage et preuves</text>
+<text x="597.0" y="109.0" opacity=".65" style="font-size:11.5px">5 nœuds · 3 h</text>
+</a>
+<a class="n" href="niveau-1.html#arith-euclide"><title>De la division euclidienne aux résidus quadratiques : le calcul qui fait tourner RSA.</title>
+<rect x="361.0" y="224.0" width="200.0" height="70" rx="4"/>
+<text class="tt" x="373.0" y="247.0">Arithmétique de ℤ</text>
+<text x="373.0" y="269.0" opacity=".65" style="font-size:11.5px">7 nœuds · 5 h</text>
+</a>
+<a class="n" href="niveau-1.html#grp-base"><title>La structure qui porte le logarithme discret, de ℤ/nℤ aux courbes elliptiques.</title>
+<rect x="585.0" y="224.0" width="200.0" height="70" rx="4"/>
+<text class="tt" x="597.0" y="247.0">Groupes</text>
+<text x="597.0" y="269.0" opacity=".65" style="font-size:11.5px">6 nœuds · 5 h</text>
+</a>
+<a class="n" href="niveau-1.html#lin-ev"><title>Les espaces vectoriels relus sur un corps fini quelconque, pas seulement sur ℝ.</title>
+<rect x="809.0" y="224.0" width="200.0" height="70" rx="4"/>
+<text class="tt" x="821.0" y="247.0">Algèbre linéaire</text>
+<text x="821.0" y="269.0" opacity=".65" style="font-size:11.5px">4 nœuds · 3 h</text>
+</a>
+<a class="n" href="niveau-2.html#ann-base"><title>Le cours de Pr Diankha, et la clé de tout le niveau 3.</title>
+<rect x="361.0" y="384.0" width="200.0" height="70" rx="4"/>
+<text class="tt" x="373.0" y="407.0">Anneaux et idéaux</text>
+<text x="373.0" y="429.0" opacity=".65" style="font-size:11.5px">5 nœuds · 4 h</text>
+</a>
+<a class="n" href="niveau-2.html#poly-division"><title>K[X] comme modèle d&#x27;anneau euclidien, et la fabrique des corps finis.</title>
+<rect x="585.0" y="384.0" width="200.0" height="70" rx="4"/>
+<text class="tt" x="597.0" y="407.0">Polynômes</text>
+<text x="597.0" y="429.0" opacity=".65" style="font-size:11.5px">3 nœuds · 2 h</text>
+</a>
+<a class="n" href="niveau-2.html#mod-base"><title>Les espaces vectoriels sur un anneau : le cadre du post-quantique.</title>
+<rect x="809.0" y="384.0" width="200.0" height="70" rx="4"/>
+<text class="tt" x="821.0" y="407.0">Modules</text>
+<text x="821.0" y="429.0" opacity=".65" style="font-size:11.5px">4 nœuds · 3 h</text>
+</a>
+<a class="n" href="niveau-3.html#ext-degre"><title>Comment on fabrique un corps plus grand, et ce qu&#x27;on y gagne.</title>
+<rect x="473.0" y="544.0" width="200.0" height="70" rx="4"/>
+<text class="tt" x="485.0" y="567.0">Extensions de corps</text>
+<text x="485.0" y="589.0" opacity=".65" style="font-size:11.5px">4 nœuds · 3 h</text>
+</a>
+<a class="n" href="niveau-3.html#cf-existence"><title>𝔽q : l&#x27;objet le plus utilisé de tout le master.</title>
+<rect x="697.0" y="544.0" width="200.0" height="70" rx="4"/>
+<text class="tt" x="709.0" y="567.0">Corps finis</text>
+<text x="709.0" y="589.0" opacity=".65" style="font-size:11.5px">4 nœuds · 3 h</text>
+</a>
+<a class="n" href="niveau-4.html#tan-primalite"><title>Les trois problèmes dont dépend la sécurité : primalité, factorisation, logarithme discret.</title>
+<rect x="150.0" y="704.0" width="194.8" height="70" rx="4"/>
+<text class="tt" x="162.0" y="727.0">Théorie algorithmique des</text>
+<text class="tt" x="162.0" y="743.0">nombres</text>
+<text x="162.0" y="765.0" opacity=".65" style="font-size:11.5px">3 nœuds · 3 h</text>
+</a>
+<a class="n" href="niveau-4.html#ga-varietes"><title>Le cours de Pr Sankaré, jusqu&#x27;aux courbes elliptiques et aux couplages.</title>
+<rect x="368.8" y="704.0" width="194.8" height="70" rx="4"/>
+<text class="tt" x="380.8" y="727.0">Géométrie algébrique et</text>
+<text class="tt" x="380.8" y="743.0">courbes</text>
+<text x="380.8" y="765.0" opacity=".65" style="font-size:11.5px">5 nœuds · 5 h</text>
+</a>
+<a class="n" href="niveau-4.html#codes-lineaires"><title>L&#x27;algèbre linéaire sur 𝔽q mise au service de la fiabilité — et de la cryptographie post-quantique.</title>
+<rect x="587.6" y="704.0" width="194.8" height="70" rx="4"/>
+<text class="tt" x="599.6" y="727.0">Codes correcteurs</text>
+<text x="599.6" y="749.0" opacity=".65" style="font-size:11.5px">5 nœuds · 4 h</text>
+</a>
+<a class="n" href="niveau-4.html#res-base"><title>La branche qui porte le post-quantique normalisé par le NIST.</title>
+<rect x="806.4" y="704.0" width="194.8" height="70" rx="4"/>
+<text class="tt" x="818.4" y="727.0">Réseaux euclidiens</text>
+<text x="818.4" y="749.0" opacity=".65" style="font-size:11.5px">3 nœuds · 3 h</text>
+</a>
+<a class="n" href="niveau-4.html#cplx-turing"><title>Le cours de complexité : ce qui donne un sens au mot « difficile ».</title>
+<rect x="1025.2" y="704.0" width="194.8" height="70" rx="4"/>
+<text class="tt" x="1037.2" y="727.0">Complexité et information</text>
+<text x="1037.2" y="749.0" opacity=".65" style="font-size:11.5px">4 nœuds · 4 h</text>
+</a>
+</svg></div>
+  <p class="legende">
+    <span>Environ 51 heures de travail au total.</span>
+    <span>14 modules, 62 nœuds.</span>
+    <span>Cliquer une boîte ouvre son premier nœud.</span>
+  </p>
+
+  <h2 class="sec">Les cinq niveaux</h2>
+  <div class="cartes"><a class="niv-card" href="niveau-0.html"><span class="k">Niveau 0 · Le socle commun</span><h3>Langage et outils</h3><p>Rien d&#x27;ici n&#x27;est spécifique au master, et c&#x27;est exactement pour cela qu&#x27;on n&#x27;y revient jamais : tout le monde est censé le savoir.</p><span class="cpt">5 nœuds · environ 3 h</span></a><a class="niv-card" href="niveau-1.html"><span class="k">Niveau 1 · Le tronc</span><h3>Arithmétique, groupes, algèbre linéaire</h3><p>C&#x27;est le niveau qui porte tout le reste.</p><span class="cpt">17 nœuds · environ 13 h</span></a><a class="niv-card" href="niveau-2.html"><span class="k">Niveau 2 · La charnière</span><h3>Anneaux, polynômes, modules</h3><p>Le niveau que presque personne n&#x27;a vu complètement en licence, et dont dépendent les niveaux 3 et 4.</p><span class="cpt">12 nœuds · environ 10 h</span></a><a class="niv-card" href="niveau-3.html"><span class="k">Niveau 3 · La fabrique</span><h3>Corps et corps finis</h3><p>Tout ce que le master calcule — AES, les codes, les courbes — se calcule dans un corps fini.</p><span class="cpt">8 nœuds · environ 7 h</span></a><a class="niv-card" href="niveau-4.html"><span class="k">Niveau 4 · Les applications</span><h3>Les branches spécialisées</h3><p>Ici chaque branche est un cours du master.</p><span class="cpt">20 nœuds · environ 18 h</span></a></div>
+
+  <h2 class="sec">Les trois chaînes à ne pas lâcher</h2>
+  <p>Si l'on ne devait retenir que trois parcours dans cette carte, ce sont ceux-là :
+  chacun va d'une notion de licence jusqu'à un cryptosystème utilisé aujourd'hui.</p>
+  
+<div class="chaines">
+  <div class="chaine"><h4>Chaîne 1 — le logarithme discret</h4>
+    <p>ℤ/nℤ → groupes cycliques → logarithme discret → courbes elliptiques.<br>
+    C'est la chaîne de Diffie-Hellman, ElGamal et ECDSA.</p></div>
+  <div class="chaine"><h4>Chaîne 2 — les corps finis</h4>
+    <p>anneaux → K[X]/(P) → corps finis → codes cycliques et Reed-Solomon.<br>
+    C'est la chaîne d'AES et des codes correcteurs.</p></div>
+  <div class="chaine"><h4>Chaîne 3 — le post-quantique</h4>
+    <p>algèbre linéaire → modules → réseaux → LWE.<br>
+    C'est la chaîne de ML-KEM et ML-DSA, les standards du NIST.</p></div>
+</div>
+
+  <h2 class="sec">Comment s'en servir</h2>
+  <div class="howto">
+    <div><p class="num">1</p><p><strong>Situe-toi.</strong> Ouvre le niveau qui correspond à là où
+    tu bloques, pas à là où tu en es dans le programme.</p></div>
+    <div><p class="num">2</p><p><strong>Remonte les prérequis.</strong> Chaque nœud dit ce qu'il
+    faut avant. Un cours qui « ne passe pas » a presque toujours sa cause deux niveaux plus bas.</p></div>
+    <div><p class="num">3</p><p><strong>Démontre, puis implémente.</strong> Une notion n'est acquise
+    que quand la preuve tient sans le cours et que le code tourne.</p></div>
+    <div><p class="num">4</p><p><strong>Relie au master.</strong> Chaque nœud porte un encadré
+    « dans le master » : c'est là que la théorie devient un outil.</p></div>
+  </div>
+
+  <h2 class="sec">Ce que ce site n'est pas</h2>
+  <p>Ce n'est pas un substitut aux cours du master, ni une liste de recettes. C'est une boussole :
+  il dit où l'on est, ce qui manque pour avancer, et à quoi chaque notion va servir. Les
+  démonstrations y sont faites entièrement, parce qu'en master une notion non démontrée
+  n'est pas une notion acquise.</p>
+</div>
+
+</body>
+</html>
