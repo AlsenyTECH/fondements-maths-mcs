@@ -1011,7 +1011,7 @@ print(legendre_symbol(3, p), jacobi_symbol(1001, 9907))
 print(len(quadratic_residues(p)))          # (p-1)/2 + 1 avec 0
 print(Mod(3, p).is_square(), Mod(3, p).sqrt())</pre><pre class="sortie">1 -1
 505
-True 460</pre></div>
+True 149</pre></div>
 
 <h3 class="exos-h">Vérifie que tu as compris</h3>
 <article class="exo"><p class="exo-n">Exercice 1</p><div class="exo-q">
@@ -1822,7 +1822,7 @@ sous-groupe utilisé : \(|E(\Fq)|=h\cdot n\) avec \(h\) tout petit (1, 4 ou 8).<
 </div>
 
 <div class="code tex2jax_ignore"><div class="code-h"><p class="lab">La structure du groupe décide de la sécurité</p><span class="code-lang sage">sagemath</span><button type="button" class="copier">copier</button></div><pre>E = EllipticCurve(GF(1009), [1, 3])
-print(E.order(), E.abelian_group())
+print(E.order(), E.abelian_group().invariants())
 
 # La courbe standard P-256 : groupe cyclique d&#x27;ordre premier
 p = 2^256 - 2^224 + 2^192 + 2^96 - 1
@@ -1830,8 +1830,12 @@ a = -3
 b = 0x5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b
 P256 = EllipticCurve(GF(p), [a, b])
 n = P256.order()
-print(n.is_prime())                 # cofacteur 1 : pas de Pohlig-Hellman</pre><pre class="sortie">1020 Additive abelian group isomorphic to Z/1020
+print(n.is_prime())                 # cofacteur 1 : pas de Pohlig-Hellman</pre><pre class="sortie">1060 (2, 530)
 True</pre></div>
+
+<p>La première courbe a 1060 points et son groupe est \(\Z/2\Z\times\Z/530\Z\) : deux facteurs,
+avec bien \(2\mid530\) et \(2\mid 1009-1\). Elle n'est donc pas cyclique. P-256, elle, a un
+ordre premier : son groupe est cyclique et n'offre aucune décomposition.</p>
 
 <h3 class="exos-h">Vérifie que tu as compris</h3>
 <article class="exo"><p class="exo-n">Exercice 1</p><div class="exo-q">
@@ -2096,12 +2100,12 @@ print(A.rank(), A.right_kernel().dimension())
 print(A.echelon_form())
 b = vector(GF(2), [1,0,1])
 print(A.solve_right(b))
-print(len(A.right_kernel().list()), &quot;solutions&quot;)</pre><pre class="sortie">3 1
-[1 0 0 1]
-[0 1 0 1]
-[0 0 1 0]
-(1, 0, 1, 0)
-2 solutions</pre></div>
+print(len(A.right_kernel().list()), &quot;solutions&quot;)</pre><pre class="sortie">2 2
+[1 0 1 1]
+[0 1 1 0]
+[0 0 0 0]
+(1, 0, 0, 0)
+4 solutions</pre></div>
 
 <h3 class="exos-h">Vérifie que tu as compris</h3>
 <article class="exo"><p class="exo-n">Exercice 1</p><div class="exo-q">

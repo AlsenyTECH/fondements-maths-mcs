@@ -605,7 +605,7 @@ annoncé par le théorème.</p>
 N = 2^128                      # sortie d'une fonction de hachage 128 bits
 k = ceil(1.18 * sqrt(N))
 print(k, log(k, 2).n())        # nombre de hachages avant collision
-""", "sagemath", "22300745198530623141535718272648361505  64.2...",
+""", "sagemath", "21767158006977269760 64.2387868595871",
 "Pourquoi 128 bits de sortie ne valent que 64 bits de sécurité") + r"""
 
 <h3 class="exos-h">Vérifie que tu as compris</h3>

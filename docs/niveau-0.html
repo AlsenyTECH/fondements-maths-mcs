@@ -630,7 +630,7 @@ annoncé par le théorème.</p>
 
 <div class="code tex2jax_ignore"><div class="code-h"><p class="lab">Pourquoi 128 bits de sortie ne valent que 64 bits de sécurité</p><span class="code-lang sage">sagemath</span><button type="button" class="copier">copier</button></div><pre>N = 2^128                      # sortie d&#x27;une fonction de hachage 128 bits
 k = ceil(1.18 * sqrt(N))
-print(k, log(k, 2).n())        # nombre de hachages avant collision</pre><pre class="sortie">22300745198530623141535718272648361505  64.2...</pre></div>
+print(k, log(k, 2).n())        # nombre de hachages avant collision</pre><pre class="sortie">21767158006977269760 64.2387868595871</pre></div>
 
 <h3 class="exos-h">Vérifie que tu as compris</h3>
 <article class="exo"><p class="exo-n">Exercice 1</p><div class="exo-q">
