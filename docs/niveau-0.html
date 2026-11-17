@@ -7,6 +7,7 @@
 <meta name="description" content="Les fondements mathématiques du Master Mathématiques, Cryptographie et Sécurité : arithmétique, groupes, anneaux, modules, corps finis, courbes, codes, réseaux et complexité.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Kalam:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem('mcs-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <script>
 window.MathJax = {
   tex: {
@@ -47,10 +48,13 @@ window.MathJax = {
   <nav class="side" id="side" aria-label="Sommaire du niveau">
     <p class="brand"><a href="index.html">Fondements MCS</a></p>
     <p class="brand-sub">Mathématiques, Cryptographie et Sécurité</p>
+    <div class="rech" role="search"><input type="search" class="rech-in" placeholder="Rechercher une notion…" aria-label="Rechercher une notion" autocomplete="off"><ul class="rech-res" hidden></ul></div>
     <ul class="niveaux"><li><a href="index.html"><span class="n-num">·</span>La carte</a></li><li><a href="niveau-0.html" class="ici"><span class="n-num">0</span>Langage et outils</a></li><li><a href="niveau-1.html"><span class="n-num">1</span>Arithmétique, groupes, algèbre linéaire</a></li><li><a href="niveau-2.html"><span class="n-num">2</span>Anneaux, polynômes, modules</a></li><li><a href="niveau-3.html"><span class="n-num">3</span>Corps et corps finis</a></li><li><a href="niveau-4.html"><span class="n-num">4</span>Les branches spécialisées</a></li></ul>
     <div class="prog"><div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
       <p class="prog-txt" id="prog-txt"></p></div>
     <div id="nav"></div>
+    <ul class="side-outils"><li><a href="positionnement.html">Je me situe</a></li><li><a href="parcours.html">Parcours guidés</a></li><li><a href="glossaire.html">Glossaire</a></li></ul>
+    <button type="button" class="theme-btn" aria-pressed="false">Thème sombre</button>
   </nav>
 
   <main class="main" id="main">
@@ -151,7 +155,7 @@ de \(f\).</p>
 <p>C'est-à-dire : <u>il existe un entier que \(f\) n'atteint jamais</u>.</p>
 </div><div class="prof"><p class="lab">Remarque</p><p>Pour prouver la négation, il suffit d'exhiber <em>un</em> tel \(y\). Pour prouver
 l'énoncé, il faut traiter <em>tous</em> les \(y\).</p></div></details></article></div></section>
-<section class="lesson" id="preuves" data-part="Langage et preuves" data-num="0.2" data-title="Les quatre techniques de preuve" hidden><header class="lhead"><p class="eyebrow">Langage et preuves · Nœud 0.2<span class="meta">40 min</span></p><h2>Les quatre techniques de preuve</h2></header><div class="lbody"><p class="objectif">Choisir entre preuve directe, contraposée, absurde et récurrence, et rédiger proprement.</p><div class="fiche"><dl><dt>Prérequis</dt><dd><a href="niveau-0.html#log-quantif">Logique, quantificateurs, négation</a></dd><dt>Ouvre sur</dt><dd><a href="niveau-1.html#arith-euclide">Divisibilité, PGCD, algorithme d'Euclide</a>, <a href="niveau-4.html#cplx-turing">Machines de Turing, P, NP, réductions</a></dd><dt>En licence</dt><dd><span class="badge l3">Vu en licence</span></dd></dl></div><div class="master"><p class="lab">Dans le master</p><p>La preuve par réduction, centrale en cryptographie, est une contraposée déguisée : si quelqu'un casse le schéma, alors il résout le problème difficile.</p></div>
+<section class="lesson" id="preuves" data-part="Langage et preuves" data-num="0.2" data-title="Les quatre techniques de preuve" hidden><header class="lhead"><p class="eyebrow">Langage et preuves · Nœud 0.2<span class="meta">40 min</span></p><h2>Les quatre techniques de preuve</h2></header><div class="lbody"><p class="objectif">Choisir entre preuve directe, contraposée, absurde et récurrence, et rédiger proprement.</p><div class="fiche"><dl><dt>Prérequis</dt><dd><a href="niveau-0.html#log-quantif">Logique, quantificateurs, négation</a></dd><dt>Ouvre sur</dt><dd><a href="niveau-1.html#arith-euclide">Divisibilité, PGCD, algorithme d'Euclide</a>, <a href="niveau-4.html#cplx-turing">Machines de Turing et décidabilité</a></dd><dt>En licence</dt><dd><span class="badge l3">Vu en licence</span></dd></dl></div><div class="master"><p class="lab">Dans le master</p><p>La preuve par réduction, centrale en cryptographie, est une contraposée déguisée : si quelqu'un casse le schéma, alors il résout le problème difficile.</p></div>
 <p class="lead">Il n'y a que quatre façons de démontrer, et savoir laquelle choisir fait gagner
 un temps considérable. Le choix se lit presque toujours dans la forme de l'énoncé.</p>
 
@@ -281,7 +285,7 @@ est « \(a\) pair <em>ou</em> \(b\) pair ».</p></div></details></article>
 <p>C'est la formule au rang \(n+1\). La propriété est donc vraie pour tout \(n\ge1\).</p>
 </div><div class="prof"><p class="lab">Remarque</p><p>Le point technique est la factorisation par \((n+1)^2\). Prendre l'habitude de
 factoriser avant de développer fait gagner beaucoup de temps.</p></div></details></article></div></section>
-<section class="lesson" id="ensembles" data-part="Langage et preuves" data-num="0.3" data-title="Ensembles, applications, cardinaux" hidden><header class="lhead"><p class="eyebrow">Langage et preuves · Nœud 0.3<span class="meta">35 min</span></p><h2>Ensembles, applications, cardinaux</h2></header><div class="lbody"><p class="objectif">Manipuler images, images réciproques, injections et surjections sans hésiter.</p><div class="fiche"><dl><dt>Prérequis</dt><dd><a href="niveau-0.html#log-quantif">Logique, quantificateurs, négation</a></dd><dt>Ouvre sur</dt><dd><a href="niveau-0.html#quotients">Relations d'équivalence et quotients</a>, <a href="niveau-0.html#denombrement">Dénombrement et probabilités discrètes</a>, <a href="niveau-1.html#lin-ev">Espaces vectoriels, bases, dimension</a></dd><dt>En licence</dt><dd><span class="badge l3">Vu en licence</span></dd></dl></div><div class="master"><p class="lab">Dans le master</p><p>Un chiffrement est une application bijective à clé fixée ; une fonction de hachage est une surjection volontairement non inversible.</p></div>
+<section class="lesson" id="ensembles" data-part="Langage et preuves" data-num="0.3" data-title="Ensembles, applications, cardinaux" hidden><header class="lhead"><p class="eyebrow">Langage et preuves · Nœud 0.3<span class="meta">35 min</span></p><h2>Ensembles, applications, cardinaux</h2></header><div class="lbody"><p class="objectif">Manipuler images, images réciproques, injections et surjections sans hésiter.</p><div class="fiche"><dl><dt>Prérequis</dt><dd><a href="niveau-0.html#log-quantif">Logique, quantificateurs, négation</a></dd><dt>Ouvre sur</dt><dd><a href="niveau-0.html#quotients">Relations d'équivalence et quotients</a>, <a href="niveau-0.html#denombrement">Dénombrement et probabilités discrètes</a>, <a href="niveau-1.html#lin-ev">Espaces vectoriels, bases, dimension</a>, <a href="niveau-1.html#proba-espaces">Espaces probabilisés et tribus</a></dd><dt>En licence</dt><dd><span class="badge l3">Vu en licence</span></dd></dl></div><div class="master"><p class="lab">Dans le master</p><p>Un chiffrement est une application bijective à clé fixée ; une fonction de hachage est une surjection volontairement non inversible.</p></div>
 <p class="lead">Le vocabulaire des applications sert tous les jours en master : un chiffrement
 est une bijection à clé fixée, une fonction de hachage une surjection qu'on ne sait pas inverser,
 une projection canonique une surjection sur un quotient.</p>
@@ -540,7 +544,7 @@ passe pas au quotient.</p>
 </div><div class="prof"><p class="lab">Remarque</p><p>Cette relation est celle des « résidus quadratiques », qu'on retrouvera au nœud
 <em>Résidus quadratiques, Legendre, Jacobi</em>. Elle est compatible avec la multiplication
 mais pas avec l'addition — d'où le fait que le symbole de Legendre soit multiplicatif.</p></div></details></article></div></section>
-<section class="lesson" id="denombrement" data-part="Langage et preuves" data-num="0.5" data-title="Dénombrement et probabilités discrètes" hidden><header class="lhead"><p class="eyebrow">Langage et preuves · Nœud 0.5<span class="meta">40 min</span></p><h2>Dénombrement et probabilités discrètes</h2></header><div class="lbody"><p class="objectif">Compter, et majorer une probabilité par le lemme de l'union et le paradoxe des anniversaires.</p><div class="fiche"><dl><dt>Prérequis</dt><dd><a href="niveau-0.html#ensembles">Ensembles, applications, cardinaux</a></dd><dt>Ouvre sur</dt><dd><a href="niveau-4.html#tan-primalite">Tests de primalité et preuves de primalité</a>, <a href="niveau-4.html#codes-bornes">Bornes : Singleton, Hamming, Gilbert-Varshamov</a>, <a href="niveau-4.html#cplx-probabiliste">Algorithmes probabilistes, fonctions à sens unique</a>, <a href="niveau-4.html#cplx-entropie">Entropie, secret parfait de Shannon</a></dd><dt>En licence</dt><dd><span class="badge partiel">Entrevu en licence</span></dd></dl></div><div class="master"><p class="lab">Dans le master</p><p>Donne la taille de l'espace des clés, le coût d'une recherche exhaustive et l'attaque des anniversaires sur les fonctions de hachage.</p></div>
+<section class="lesson" id="denombrement" data-part="Langage et preuves" data-num="0.5" data-title="Dénombrement et probabilités discrètes" hidden><header class="lhead"><p class="eyebrow">Langage et preuves · Nœud 0.5<span class="meta">40 min</span></p><h2>Dénombrement et probabilités discrètes</h2></header><div class="lbody"><p class="objectif">Compter, et majorer une probabilité par le lemme de l'union et le paradoxe des anniversaires.</p><div class="fiche"><dl><dt>Prérequis</dt><dd><a href="niveau-0.html#ensembles">Ensembles, applications, cardinaux</a></dd><dt>Ouvre sur</dt><dd><a href="niveau-1.html#proba-espaces">Espaces probabilisés et tribus</a>, <a href="niveau-4.html#codes-bornes">Bornes : Singleton, Hamming, Gilbert-Varshamov</a>, <a href="niveau-4.html#cplx-entropie">Entropie et secret parfait de Shannon</a></dd><dt>En licence</dt><dd><span class="badge partiel">Entrevu en licence</span></dd></dl></div><div class="master"><p class="lab">Dans le master</p><p>Donne la taille de l'espace des clés, le coût d'une recherche exhaustive et l'attaque des anniversaires sur les fonctions de hachage.</p></div>
 <p class="lead">Compter, c'est mesurer la sécurité. La taille d'un espace de clés, le coût d'une
 recherche exhaustive, la probabilité qu'une collision apparaisse : tout cela est du dénombrement,
 et les ordres de grandeur comptent plus que les formules exactes.</p>
@@ -666,8 +670,9 @@ La résistance à la préimage, elle, reste à \(2^{n}\) — les deux notions n'
       <span class="right"><p class="done-note" id="done-note" hidden>Nœud validé ✓</p>
       <a class="btn" id="next" href="#">Suivant →</a></span>
     </nav>
+    <footer class="pied"><p>© 2026 MathNexus · Contenu sous licence <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr">CC BY-NC-SA 4.0</a>, code sous licence MIT. Site personnel, sans lien officiel avec une université.</p></footer>
   </main>
 </div>
-<script defer src="assets/site.js"></script><script defer src="assets/atelier.js"></script>
+<script defer src="assets/site.js"></script><script defer src="assets/atelier.js"></script><script defer src="assets/outils.js"></script>
 </body>
 </html>

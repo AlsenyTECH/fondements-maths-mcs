@@ -1,7 +1,7 @@
 # Fondements mathématiques du Master MCS
 
 Site public sur le socle mathématique du Master Mathématiques, Cryptographie et Sécurité :
-62 nœuds répartis en 5 niveaux, chacun relié à ce qu'il ouvre dans le master.
+95 nœuds répartis en 5 niveaux et deux troncs (algèbre, probabilités), chacun relié à ce qu'il ouvre dans le master.
 
 ## Publier le site
 
@@ -88,3 +88,18 @@ affiche un éditeur, exécute son programme dans le navigateur avec Pyodide et l
 - Les ateliers ne fonctionnent pas en ouvrant les fichiers par double-clic. En local :
   `cd docs && python3 -m http.server`, puis ouvrir http://localhost:8000.
 - Un nœud est validé quand son test de sortie **et** son atelier sont réussis.
+
+## Outils du site
+
+| Page | Source des données |
+|---|---|
+| `positionnement.html` — test « Je me situe » | `POSITIONNEMENT` dans `contenu/outils_donnees.py` |
+| `parcours.html` — parcours guidés | `PARCOURS` |
+| `glossaire.html` — notations et glossaire | `GLOSSAIRE`, `NOTATIONS` |
+| recherche (toutes les pages) | index construit automatiquement depuis le registre, les encadrés « à retenir » et le glossaire |
+
+Chaque entrée cite des nœuds par leur identifiant ; `build.py` refuse de construire si l'un d'eux
+n'existe pas. La mise en page de ces pages est dans `pages_outils.py`, leur comportement dans
+`modele/outils.js` (thème, recherche, carte colorée, progression des parcours, test de positionnement).
+
+Licences : voir `LICENCE.md`.

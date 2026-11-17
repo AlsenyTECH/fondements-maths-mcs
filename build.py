@@ -3,7 +3,7 @@
 
     python3 build.py
 
-Lit contenu/registre.py (les 62 nœuds) et contenu/niveau*.py (le cours rédigé),
+Lit contenu/registre.py (les nœuds) et contenu/niveau*.py (le cours rédigé),
 écrit docs/index.html, docs/niveau-0.html … niveau-4.html et docs/assets/.
 """
 
@@ -16,8 +16,10 @@ import sys
 
 RACINE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(RACINE, "contenu"))
+sys.path.insert(0, RACINE)
 
 import registre as R  # noqa: E402
+import pages_outils as PO  # noqa: E402
 from briques import (retenir, demo, prof, master, code, exo,  # noqa: E402,F401
                      video, video_attente)
 
@@ -68,8 +70,8 @@ window.MathJax = {
 # la carte des dépendances
 # ─────────────────────────────────────────────────────────────────────────────
 
-BOITE_H = 70
-BANDE_H, MARGE_X, MARGE_HAUT, ECART = 160, 150, 16, 24
+BOITE_H = 84
+BANDE_H, MARGE_X, MARGE_HAUT, ECART = 172, 150, 16, 24
 LARGEUR = 1240
 BOITE_MAX = 200
 
@@ -88,7 +90,7 @@ def _coupe(titre, largeur):
             lignes.append(cour)
             cour = mot
     lignes.append(cour)
-    return lignes[:2]
+    return lignes[:3]
 
 
 def _positions():
@@ -147,6 +149,20 @@ def carte_svg():
     for a, b in _aretes():
         xa, ya = pos[a]
         xb, yb = pos[b]
+        if ya == yb:
+            # dépendance entre deux modules d'un même niveau
+            entre = [m for m, (x, y) in pos.items() if y == ya and min(xa, xb) < x < max(xa, xb)]
+            if not entre:
+                # voisins : flèche horizontale
+                gauche, droite = (xa + larg[a], xb) if xa < xb else (xa, xb + larg[b])
+                p.append('<path class="lk" marker-end="url(#fl)" d="M%.1f,%.1f L%.1f,%.1f"/>'
+                         % (gauche, ya + BOITE_H / 2, droite + (-3 if xa < xb else 3), yb + BOITE_H / 2))
+            else:
+                # non voisins : arc sous les boîtes, pour ne traverser aucun module
+                xa2, xb2, bas = xa + larg[a] / 2, xb + larg[b] / 2, ya + BOITE_H
+                p.append('<path class="lk" marker-end="url(#fl)" d="M%.1f,%.1f C%.1f,%.1f %.1f,%.1f %.1f,%.1f"/>'
+                         % (xa2, bas, xa2, bas + 34, xb2, bas + 34, xb2, bas + 3))
+            continue
         xa += larg[a] / 2
         ya += BOITE_H
         xb += larg[b] / 2
@@ -159,8 +175,11 @@ def carte_svg():
             x, y = pos[m.id]
             L = larg[m.id]
             cible = "%s#%s" % (niv.fichier, m.noeuds[0].id)
-            p.append('<a class="n" href="%s"><title>%s</title>' % (cible, html.escape(m.resume)))
-            p.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%d" rx="4"/>' % (x, y, L, BOITE_H))
+            p.append('<a class="n" href="%s" data-noeuds="%s"><title>%s</title>'
+                     % (cible, " ".join(n.id for n in m.noeuds), html.escape(m.resume)))
+            p.append('<rect class="box" x="%.1f" y="%.1f" width="%.1f" height="%d" rx="4"/>' % (x, y, L, BOITE_H))
+            p.append('<rect class="pb" x="%.1f" y="%.1f" width="0" height="4" rx="2" data-l="%.1f"/>'
+                     % (x + 6, y + BOITE_H - 9, L - 12))
             lignes = _coupe(m.titre, L)
             for k, ligne in enumerate(lignes):
                 p.append('<text class="tt" x="%.1f" y="%.1f">%s</text>'
@@ -229,8 +248,10 @@ def coquille(titre, body, niveau=None, suivant=None, accueil=False):
         data = ' data-niveau="%d"' % niveau.num
         if suivant:
             data += ' data-suivant="%s"' % suivant
-    script = "" if accueil else ('<script defer src="assets/site.js"></script>'
-                                     '<script defer src="assets/atelier.js"></script>')
+    script = '<script defer src="assets/outils.js"></script>'
+    if niveau is not None:
+        script = ('<script defer src="assets/site.js"></script>'
+                  '<script defer src="assets/atelier.js"></script>' + script)
     return """<!doctype html>
 <html lang="fr">
 <head>
@@ -241,13 +262,14 @@ def coquille(titre, body, niveau=None, suivant=None, accueil=False):
 <link rel="stylesheet" href="%s">
 <link rel="stylesheet" href="assets/style.css">
 %s
+%s
 </head>
 <body%s>
 %s
 %s
 </body>
 </html>
-""" % (html.escape(titre), POLICES, MATHJAX, data, body, script)
+""" % (html.escape(titre), POLICES, PO.THEME_INIT, MATHJAX, data, body, script)
 
 
 def page_niveau(niv, suivant):
@@ -291,10 +313,13 @@ def page_niveau(niv, suivant):
   <nav class="side" id="side" aria-label="Sommaire du niveau">
     <p class="brand"><a href="index.html">Fondements MCS</a></p>
     <p class="brand-sub">%s</p>
+    %s
     <ul class="niveaux"><li><a href="index.html"><span class="n-num">·</span>La carte</a></li>%s</ul>
     <div class="prog"><div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
       <p class="prog-txt" id="prog-txt"></p></div>
     <div id="nav"></div>
+    %s
+    %s
   </nav>
 
   <main class="main" id="main">
@@ -304,8 +329,10 @@ def page_niveau(niv, suivant):
       <span class="right"><p class="done-note" id="done-note" hidden>Nœud validé ✓</p>
       <a class="btn" id="next" href="#">Suivant →</a></span>
     </nav>
+    %s
   </main>
-</div>""" % (niv.num, html.escape(SITE_SOUS_TITRE), nav_niveaux, "\n".join(sections))
+</div>""" % (niv.num, html.escape(SITE_SOUS_TITRE), PO.RECHERCHE, nav_niveaux, PO.outils_sommaire(),
+       PO.THEME_BTN, "\n".join(sections), PO.pied())
 
     return coquille("Niveau %d · %s — %s" % (niv.num, niv.titre, SITE_TITRE),
                     body, niveau=niv, suivant=suivant)
@@ -325,78 +352,7 @@ def _table_noeuds(niv):
 
 
 def page_accueil():
-    cartes = "".join(
-        '<a class="niv-card" href="%s"><span class="k">Niveau %d · %s</span><h3>%s</h3>'
-        '<p>%s</p><span class="cpt">%d nœuds · environ %d h</span></a>'
-        % (niv.fichier, niv.num, html.escape(niv.sous_titre), html.escape(niv.titre),
-           html.escape(niv.resume.split('.')[0] + '.'), len(niv.noeuds),
-           round(sum(n.duree for n in niv.noeuds) / 60))
-        for niv in R.NIVEAUX)
-
-    chaines = """
-<div class="chaines">
-  <div class="chaine"><h4>Chaîne 1 — le logarithme discret</h4>
-    <p>ℤ/nℤ → groupes cycliques → logarithme discret → courbes elliptiques.<br>
-    C'est la chaîne de Diffie-Hellman, ElGamal et ECDSA.</p></div>
-  <div class="chaine"><h4>Chaîne 2 — les corps finis</h4>
-    <p>anneaux → K[X]/(P) → corps finis → codes cycliques et Reed-Solomon.<br>
-    C'est la chaîne d'AES et des codes correcteurs.</p></div>
-  <div class="chaine"><h4>Chaîne 3 — le post-quantique</h4>
-    <p>algèbre linéaire → modules → réseaux → LWE.<br>
-    C'est la chaîne de ML-KEM et ML-DSA, les standards du NIST.</p></div>
-</div>"""
-
-    total = len(R.INDEX)
-    heures = round(sum(v[0].duree for v in R.INDEX.values()) / 60)
-    neufs = sum(1 for v in R.INDEX.values() if v[0].l3 == "non")
-
-    body = """<div class="accueil">
-  <header class="hero">
-    <h1>Fondements mathématiques<br>du Master MCS</h1>
-    <p>Le master Mathématiques, Cryptographie et Sécurité repose sur un socle algébrique précis.
-    Ce site le met à plat : %d nœuds, cinq niveaux, chacun relié à ce qu'il ouvre dans le master.
-    <strong>%d d'entre eux ne sont pas vus en licence</strong> — ce sont eux qui font décrocher.</p>
-  </header>
-
-  <h2 class="sec">La carte</h2>
-  <p>Chaque boîte est un module ; les flèches sont les dépendances réelles, déduites nœud par nœud.
-  Rien ne se lit de haut en bas par hasard : une flèche veut dire « sans ceci, le reste ne passe pas ».</p>
-  <div class="carte-wrap">%s</div>
-  <p class="legende">
-    <span>Environ %d heures de travail au total.</span>
-    <span>%d modules, %d nœuds.</span>
-    <span>Cliquer une boîte ouvre son premier nœud.</span>
-  </p>
-
-  <h2 class="sec">Les cinq niveaux</h2>
-  <div class="cartes">%s</div>
-
-  <h2 class="sec">Les trois chaînes à ne pas lâcher</h2>
-  <p>Si l'on ne devait retenir que trois parcours dans cette carte, ce sont ceux-là :
-  chacun va d'une notion de licence jusqu'à un cryptosystème utilisé aujourd'hui.</p>
-  %s
-
-  <h2 class="sec">Comment s'en servir</h2>
-  <div class="howto">
-    <div><p class="num">1</p><p><strong>Situe-toi.</strong> Ouvre le niveau qui correspond à là où
-    tu bloques, pas à là où tu en es dans le programme.</p></div>
-    <div><p class="num">2</p><p><strong>Remonte les prérequis.</strong> Chaque nœud dit ce qu'il
-    faut avant. Un cours qui « ne passe pas » a presque toujours sa cause deux niveaux plus bas.</p></div>
-    <div><p class="num">3</p><p><strong>Démontre, puis implémente.</strong> Une notion n'est acquise
-    que quand la preuve tient sans le cours et que le code tourne.</p></div>
-    <div><p class="num">4</p><p><strong>Relie au master.</strong> Chaque nœud porte un encadré
-    « dans le master » : c'est là que la théorie devient un outil.</p></div>
-  </div>
-
-  <h2 class="sec">Ce que ce site n'est pas</h2>
-  <p>Ce n'est pas un substitut aux cours du master, ni une liste de recettes. C'est une boussole :
-  il dit où l'on est, ce qui manque pour avancer, et à quoi chaque notion va servir. Les
-  démonstrations y sont faites entièrement, parce qu'en master une notion non démontrée
-  n'est pas une notion acquise.</p>
-</div>""" % (total, neufs, carte_svg(), heures,
-             sum(len(n.modules) for n in R.NIVEAUX), total, cartes, chaines)
-
-    return coquille(SITE_TITRE, body, accueil=True)
+    return coquille(SITE_TITRE, PO.page_accueil(carte_svg()), accueil=True)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -433,9 +389,16 @@ def construire():
             print("  -", p)
         return 1
 
+    pbs = PO.verifier_donnees()
+    if pbs:
+        print("Identifiants inconnus dans contenu/outils_donnees.py :")
+        for p in pbs:
+            print("  -", p)
+        return 1
+
     os.makedirs(os.path.join(PUBLIC, "assets"), exist_ok=True)
     os.makedirs(os.path.join(PUBLIC, "videos"), exist_ok=True)
-    for f in ("style.css", "site.js", "atelier.js", "atelier-worker.js"):
+    for f in ("style.css", "site.js", "atelier.js", "atelier-worker.js", "outils.js"):
         shutil.copy(os.path.join(MODELE, f), os.path.join(PUBLIC, "assets", f))
 
     # Python dans le navigateur (Pyodide), pour les ateliers de code
@@ -460,6 +423,15 @@ def construire():
 
     with open(os.path.join(PUBLIC, "index.html"), "w", encoding="utf-8") as f:
         f.write(page_accueil())
+
+    outils = {"parcours.html": ("Parcours guidés", PO.page_parcours),
+              "glossaire.html": ("Notations et glossaire", PO.page_glossaire),
+              "positionnement.html": ("Je me situe", PO.page_positionnement)}
+    for fichier, (titre, fabrique) in outils.items():
+        with open(os.path.join(PUBLIC, fichier), "w", encoding="utf-8") as f:
+            f.write(coquille("%s — %s" % (titre, SITE_TITRE), fabrique(), accueil=True))
+    with open(os.path.join(PUBLIC, "assets", "index-recherche.js"), "w", encoding="utf-8") as f:
+        f.write(PO.index_recherche())
 
     for i, niv in enumerate(R.NIVEAUX):
         suivant = R.NIVEAUX[i + 1].fichier if i + 1 < len(R.NIVEAUX) else None
